@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    container_name: code-micro-videos-fc3-ts-app
+    volumes:
+      - .:/home/node/app
