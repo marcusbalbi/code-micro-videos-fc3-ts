@@ -1,17 +1,25 @@
 import { Category } from "./category"
 
 describe('Category test', () => {
+  test('create category without description', () => {
+    const c = new Category("Movie");
+    expect(c.name).toBe("Movie");
+    expect(c.getDescription()).toBeNull();
+  })
+
   test('constructor category', () => {
     const c = new Category('Movie', 'random desc');
     expect(c.name).toBe('Movie');
-    expect(c.description).toBe("random desc");
-    expect(c.active()).toBe(false);
+    expect(c.getDescription()).toBe("random desc");
+    expect(c.getActive()).toBe(true);
+    expect(c.getCreatedAt().getTime()).toBeLessThanOrEqual(Date.now())
   })
 
   test('create from props', () => {
-    const c = Category.createFromProps({ name: 'test', description: 'random desc',  is_active: true, created_at: new Date(1985, 1, 1) });
+    const c = Category.createFromProps({ name: 'test', description: 'random desc',  is_active: false, created_at: new Date(1985, 1, 1) });
     expect(c.name).toBe('test')
-    expect(c.description).toBe("random desc");
-    expect(c.active()).toBe(true);
+    expect(c.getDescription()).toBe("random desc");
+    expect(c.getActive()).toBe(false);
+    expect(c.getCreatedAt().getTime()).toBe(new Date(1985, 1, 1).getTime());
   })
 })
