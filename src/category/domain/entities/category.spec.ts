@@ -36,7 +36,7 @@ describe('Category test', () => {
 
     expect(() => {
       Category.createFromProps({ name: "test", id: "invalid-uuid" });
-    }).toThrow('invalid-uuid');
+    }).toThrow();
     
 
   });

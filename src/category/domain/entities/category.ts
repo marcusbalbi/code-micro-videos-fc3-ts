@@ -1,4 +1,4 @@
-import { v4, validate as uuidValidate } from 'uuid';
+import UniqueEntityId from '../../../shared/domain/unique-entity-id';
 
 export type CategoryProps = {
   id?: string;
@@ -8,13 +8,13 @@ export type CategoryProps = {
   created_at?: Date;
 };
 export class Category {
-  private id: string;
+  private id: UniqueEntityId;
   private is_active: boolean;
   private created_at: Date;
   private description: string | null;
 
   constructor(readonly name: string, description: string | null = null) {
-    this.id = v4();
+    this.id = new UniqueEntityId();
     this.is_active = true;
     this.created_at = new Date();
     this.description = description ?? null;
@@ -33,19 +33,12 @@ export class Category {
   }
 
   getId(): string {
-    return this.id;
+    return this.id.toString();
   }
 
   public static createFromProps(props: CategoryProps): Category {
     const cat = new Category(props.name, props.description);
-    if (props.id) {
-      if (!uuidValidate(props.id)) {
-        throw new Error(
-          `Invalid uuid passed to Category.createFromProps: ${props.id} `
-        );
-      }
-      cat.id = props.id
-    }
+    if (props.id) { cat.id = new UniqueEntityId(props.id); }
     if (typeof props.is_active === 'boolean') { cat.is_active = props.is_active }
     if (props.created_at) { cat.created_at = props.created_at }
     return cat;
