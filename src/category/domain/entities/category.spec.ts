@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { Category } from "./category"
 
 describe('Category test', () => {
@@ -18,12 +19,13 @@ describe('Category test', () => {
   })
 
   test('create from props', () => {
-    let c = Category.createFromProps({ id: 'aa-bb-cc', name: 'test', description: 'random desc',  is_active: false, created_at: new Date(1985, 1, 1) });
+    const id = v4();
+    let c = Category.createFromProps({ id, name: 'test', description: 'random desc',  is_active: false, created_at: new Date(1985, 1, 1) });
     expect(c.name).toBe('test')
     expect(c.getDescription()).toBe("random desc");
     expect(c.getActive()).toBe(false);
     expect(c.getCreatedAt().getTime()).toBe(new Date(1985, 1, 1).getTime());
-    expect(c.getId()).toBe('aa-bb-cc');
+    expect(c.getId()).toBe(id);
 
     c = Category.createFromProps({ name: 'test' });
     expect(c.name).toBe('test');
@@ -31,6 +33,12 @@ describe('Category test', () => {
     expect(c.getDescription()).toBe(null);
     expect(c.getCreatedAt().getTime()).toBeLessThanOrEqual(Date.now());
     expect(c.getId()).toBeDefined();
+
+    expect(() => {
+      Category.createFromProps({ name: "test", id: "invalid-uuid" });
+    }).toThrow('invalid-uuid');
+    
+
   });
 
   test('Two categories should have different Ids', () => {

@@ -1,4 +1,4 @@
-import { v4 } from 'uuid';
+import { v4, validate as uuidValidate } from 'uuid';
 
 export type CategoryProps = {
   id?: string;
@@ -38,7 +38,14 @@ export class Category {
 
   public static createFromProps(props: CategoryProps): Category {
     const cat = new Category(props.name, props.description);
-    if (props.id) { cat.id = props.id }
+    if (props.id) {
+      if (!uuidValidate(props.id)) {
+        throw new Error(
+          `Invalid uuid passed to Category.createFromProps: ${props.id} `
+        );
+      }
+      cat.id = props.id
+    }
     if (typeof props.is_active === 'boolean') { cat.is_active = props.is_active }
     if (props.created_at) { cat.created_at = props.created_at }
     return cat;
