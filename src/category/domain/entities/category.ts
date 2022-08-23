@@ -1,15 +1,18 @@
 export type CategoryProps = {
+  id?: string;
   name: string;
-  description: string;
+  description?: string;
   is_active?: boolean;
   created_at?: Date;
 };
 export class Category {
+  private id: string;
   private is_active: boolean;
   private created_at: Date;
   private description: string | null;
 
   constructor(readonly name: string, description: string | null = null) {
+    this.id = 'aa-bb-cc';
     this.is_active = true;
     this.created_at = new Date();
     this.description = description ?? null;
@@ -27,10 +30,15 @@ export class Category {
     return this.description;
   }
 
+  getId(): string {
+    return this.id;
+  }
+
   public static createFromProps(props: CategoryProps): Category {
     const cat = new Category(props.name, props.description);
-    cat.is_active = props.is_active || false;
-    cat.created_at = props.created_at || new Date();
+    if (props.id) { cat.id = props.id }
+    if (typeof props.is_active === 'boolean') { cat.is_active = props.is_active }
+    if (props.created_at) { cat.created_at = props.created_at }
     return cat;
   }
 }
