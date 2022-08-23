@@ -2,7 +2,7 @@ import InvalidUiidError from "../errors/invalid-uuid-error";
 import { v4, validate as uuidValidate } from "uuid";
 
 export default class UniqueEntityId {
-  public readonly id: string;
+  private readonly id: string;
   constructor(id: string | null = null) {
     this.id = id ?? v4();
     this.validate();
@@ -17,5 +17,9 @@ export default class UniqueEntityId {
 
   public toString(): string {
     return this.id;
+  }
+
+  public equals(id: UniqueEntityId) {
+    return this.id.toString() === id.toString()
   }
 }
