@@ -1,3 +1,5 @@
+import { v4 } from 'uuid';
+
 export type CategoryProps = {
   id?: string;
   name: string;
@@ -12,7 +14,7 @@ export class Category {
   private description: string | null;
 
   constructor(readonly name: string, description: string | null = null) {
-    this.id = 'aa-bb-cc';
+    this.id = v4();
     this.is_active = true;
     this.created_at = new Date();
     this.description = description ?? null;
