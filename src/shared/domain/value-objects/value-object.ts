@@ -1,8 +1,8 @@
 export abstract class ValueObject<Value> {
-  protected _value: Value;
+  protected readonly _value: Value;
 
   constructor(value: Value) {
-    this._value = value;
+    this._value = Object.freeze(value);
   }
 
   get value() {
