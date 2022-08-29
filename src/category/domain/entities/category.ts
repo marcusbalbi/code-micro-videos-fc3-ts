@@ -1,4 +1,4 @@
-import UniqueEntityId from '../../../shared/domain/unique-entity-id';
+import UniqueEntityId from '../../../shared/domain/value-objects/unique-entity-id';
 
 export type CategoryProps = {
   id?: string;
