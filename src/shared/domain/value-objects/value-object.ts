@@ -1,5 +1,4 @@
-
-export default abstract class ValueObject<Value = any> {
+export abstract class ValueObject<Value> {
   protected _value: Value;
 
   constructor(value: Value) {
@@ -10,11 +9,20 @@ export default abstract class ValueObject<Value = any> {
     return this._value;
   }
 
-  public toString(): Value {
-    return this.value;
-  }
+  public abstract toString(): string;
 
   public equals(vo: ValueObject<Value>): boolean {
     return this.toString() === vo.toString();
+  }
+}
+
+export abstract class SimpleValueObject extends ValueObject<string> {
+  public toString(): string {
+    return this._value;
+  }
+}
+export abstract class ComplexValueObject extends ValueObject<Object> {
+  public toString(): string {
+    return JSON.stringify(this._value);
   }
 }
