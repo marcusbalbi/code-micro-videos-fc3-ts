@@ -14,12 +14,4 @@ export default class UniqueEntityId extends ValueObject<string> {
       throw new InvalidUiidError();
     }
   }
-
-  public toString(): string {
-    return this.value;
-  }
-
-  public equals(id: UniqueEntityId) {
-    return this.value.toString() === id.toString();
-  }
 }

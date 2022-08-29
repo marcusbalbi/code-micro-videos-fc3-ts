@@ -9,4 +9,12 @@ export default abstract class ValueObject<Value = any> {
   get value() {
     return this._value;
   }
+
+  public toString(): Value {
+    return this.value;
+  }
+
+  public equals(vo: ValueObject<Value>): boolean {
+    return this.toString() === vo.toString();
+  }
 }

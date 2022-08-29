@@ -1,5 +1,5 @@
-import InvalidUiidError from "../../errors/invalid-uuid-error";
-import UniqueEntityId from "./unique-entity-id";
+import InvalidUiidError from "../../../errors/invalid-uuid-error";
+import UniqueEntityId from "../unique-entity-id";
 
 describe("test unique-entity-id", () => {
   it("should throw error when uuid is invalid", () => {
@@ -18,9 +18,4 @@ describe("test unique-entity-id", () => {
     const c = new UniqueEntityId(uuid);
     expect(c.toString()).toEqual(uuid)
   });
-  it('should be comparable', () => {
-    const c = new UniqueEntityId();
-    const d = new UniqueEntityId(c.toString());
-    expect(c.equals(d)).toBeTruthy();
-  })
 });
