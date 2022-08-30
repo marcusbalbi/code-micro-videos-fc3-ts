@@ -1,4 +1,3 @@
-import { v4 } from "uuid";
 import { Category } from "./category";
 
 describe("Category test", () => {
