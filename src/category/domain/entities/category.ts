@@ -14,4 +14,9 @@ export class Category extends Entity<CategoryProps> {
     this.props.is_active = props.is_active ?? true;
     this.props.created_at = props.created_at ?? new Date();
   }
+
+  update(name: string, description: string) {
+    this.props.name = name;
+    this.props.description = description;
+  }
 }
