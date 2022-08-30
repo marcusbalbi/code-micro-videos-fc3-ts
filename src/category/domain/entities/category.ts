@@ -1,4 +1,5 @@
-import UniqueEntityId from '../../../shared/domain/value-objects/unique-entity-id';
+import Entity from "../../../shared/domain/entities/entity";
+import UniqueEntityId from "../../../shared/domain/value-objects/unique-entity-id";
 
 export type CategoryProps = {
   id?: string;
@@ -7,14 +8,13 @@ export type CategoryProps = {
   is_active?: boolean;
   created_at?: Date;
 };
-export class Category {
-  private id: UniqueEntityId;
+export class Category extends Entity {
   private is_active: boolean;
   private created_at: Date;
   private description: string | null;
 
   constructor(readonly name: string, description: string | null = null) {
-    this.id = new UniqueEntityId();
+    super();
     this.is_active = true;
     this.created_at = new Date();
     this.description = description ?? null;
@@ -32,15 +32,17 @@ export class Category {
     return this.description;
   }
 
-  getId(): string {
-    return this.id.toString();
-  }
-
   public static createFromProps(props: CategoryProps): Category {
     const cat = new Category(props.name, props.description);
-    if (props.id) { cat.id = new UniqueEntityId(props.id); }
-    if (typeof props.is_active === 'boolean') { cat.is_active = props.is_active }
-    if (props.created_at) { cat.created_at = props.created_at }
+    if (props.id) {
+      cat.id = new UniqueEntityId(props.id);
+    }
+    if (typeof props.is_active === "boolean") {
+      cat.is_active = props.is_active;
+    }
+    if (props.created_at) {
+      cat.created_at = props.created_at;
+    }
     return cat;
   }
 }
