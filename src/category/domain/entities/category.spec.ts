@@ -23,11 +23,11 @@ describe("Category test", () => {
     const c2 = new Category({ name: "test1" });
     expect(c1.id).not.toEqual(c2.id);
   });
-  test("it should update a category", () => {
+  test("should update a category", () => {
     const cat = new Category({ name: "Test", description: "category test" });
     cat.update("Test 1", "Category test 1");
-    expect(cat.props.name).toBe("Test 1");
-    expect(cat.props.description).toBe("Category test 1");
+    expect(cat.name).toBe("Test 1");
+    expect(cat.description).toBe("Category test 1");
   });
   test('should activate/deactivate a category', () => {
     const cat = new Category({ name: "Test" });

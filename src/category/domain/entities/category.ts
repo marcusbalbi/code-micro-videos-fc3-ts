@@ -8,7 +8,6 @@ export type CategoryProps = {
   created_at?: Date;
 };
 export class Category extends Entity<CategoryProps> {
-
   constructor(readonly props: CategoryProps, id?: UniqueEntityId) {
     super(props, id);
     this.props.is_active = props.is_active ?? true;
@@ -16,8 +15,24 @@ export class Category extends Entity<CategoryProps> {
   }
 
   update(name: string, description: string) {
-    this.props.name = name;
-    this.props.description = description;
+    this.name = name;
+    this.description = description;
+  }
+
+  get name(): string {
+    return this.props.name;
+  }
+
+  private set name(value: string) {
+    this.props.name = value;
+  }
+
+  get description(): string | undefined {
+    return this.props.description;
+  }
+
+  private set description(value: string | undefined) {
+    this.props.description = value;
   }
 
   activate() {
