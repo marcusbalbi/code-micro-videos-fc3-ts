@@ -3,7 +3,7 @@ import { cloneDeep } from "lodash";
 
 export default abstract class Entity<T> {
   protected _id: UniqueEntityId;
-  protected props: T;
+  public readonly props: T;
   constructor(props: T, id?: UniqueEntityId) {
     this._id = id || new UniqueEntityId();
     this.props = props;
@@ -17,13 +17,15 @@ export default abstract class Entity<T> {
     return this._id.toString();
   }
 
-  toJSON() {
-    return this.props;
+  toJSON(): Required<{ id: string } & T> {
+    return {
+      id: this.id,
+      ...this.props,
+    } as Required<{ id: string } & T>;
   }
 
   serialize(): string {
-    const obj = cloneDeep(this.props) as any;
-    obj.id = this.id;
+    const obj = this.toJSON();
     return JSON.stringify(obj);
   }
 }
