@@ -1,5 +1,4 @@
 import UniqueEntityId from "../value-objects/unique-entity-id";
-import { cloneDeep } from "lodash";
 
 export default abstract class Entity<T> {
   protected _id: UniqueEntityId;

@@ -19,4 +19,11 @@ export class Category extends Entity<CategoryProps> {
     this.props.name = name;
     this.props.description = description;
   }
+
+  activate() {
+    this.props.is_active = true;
+  }
+  deactivate() {
+    this.props.is_active = false;
+  }
 }

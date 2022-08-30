@@ -29,4 +29,14 @@ describe("Category test", () => {
     expect(cat.props.name).toBe("Test 1");
     expect(cat.props.description).toBe("Category test 1");
   });
+  test('should activate/deactivate a category', () => {
+    const cat = new Category({ name: "Test" });
+    expect(cat.props.is_active).toBe(true);
+
+    cat.deactivate();
+    expect(cat.props.is_active).toBe(false);
+
+    cat.activate();
+    expect(cat.props.is_active).toBe(true);
+  })
 });
