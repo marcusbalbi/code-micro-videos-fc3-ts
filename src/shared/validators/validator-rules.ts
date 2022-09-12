@@ -1,4 +1,5 @@
-import ValidationError from "shared/errors/validation-error";
+import ValidationError from "../../shared/errors/validation-error";
+
 
 export default class ValidatorRules {
   private constructor(private value: any, private property: string) {}
