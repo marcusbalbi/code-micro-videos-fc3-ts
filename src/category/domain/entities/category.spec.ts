@@ -1,11 +1,15 @@
 import { Category } from "./category";
 
 describe("Category test", () => {
+  beforeEach(() => {
+    Category.validate = jest.fn();
+  })
   test("create category without description", () => {
     const c = new Category({ name: "Movie" });
     expect(c.props.name).toBe("Movie");
     expect(c.props.description).not.toBeDefined();
     expect(c.id).toBeDefined();
+    expect(Category.validate).toHaveBeenCalledTimes(1);
   });
 
   test("constructor category", () => {
@@ -25,6 +29,7 @@ describe("Category test", () => {
   test("should update a category", () => {
     const cat = new Category({ name: "Test", description: "category test" });
     cat.update("Test 1", "Category test 1");
+    expect(Category.validate).toHaveBeenCalledTimes(2);
     expect(cat.name).toBe("Test 1");
     expect(cat.description).toBe("Category test 1");
   });
