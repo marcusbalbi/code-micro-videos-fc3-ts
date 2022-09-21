@@ -16,18 +16,27 @@ export default class ValidatorRules {
   }
 
   string(): ValidatorRules {
-    if (typeof this.value !== "string") {
+    if (!isEmpty(this.value) && typeof this.value !== "string") {
       throw new ValidationError(`The ${ this.property } must be a string`);
     }
     return this;
   }
 
   maxLength(value: number): ValidatorRules {
-    if (this.value.length > value) {
+    if (!isEmpty(this.value) && this.value.length > value) {
       throw new ValidationError(`The ${this.property} must be less or equal than  ${ value } chars`);
+    }
+    return this;
+  }
+
+  bool(): ValidatorRules {
+    if(!isEmpty(this.value) && typeof this.value !== 'boolean') {
+      throw new ValidationError(`The ${this.property} must be a boolean`);
     }
     return this;
   }
 }
 
-ValidatorRules.values("123", "id").required().string().maxLength(20);
+export function isEmpty(value: any) {
+  return value === undefined || value === null;
+}
