@@ -16,14 +16,14 @@ export class Category extends Entity<CategoryProps> {
     this.props.created_at = props.created_at ?? new Date();
   }
 
-  update(name: string, description: string) {
+  update(name: string, description?: string) {
     Category.validate({ name, description });
     this.name = name;
     this.description = description;
   }
 
   static validate(props: Omit<CategoryProps, 'created_at'>) {
-    ValidatorRules.values(props.name, "name").required().string();
+    ValidatorRules.values(props.name, "name").required().string().maxLength(255);
     ValidatorRules.values(props.description, "description").string();
     ValidatorRules.values(props.is_active, "is_active").bool();
   }
