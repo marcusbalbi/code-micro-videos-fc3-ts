@@ -1,6 +1,6 @@
 import Entity from "../../../shared/domain/entities/entity";
 import UniqueEntityId from "../../../shared/domain/value-objects/unique-entity-id";
-import CategoryValidatorFactory from "../validators/category.validator";
+import { CategoryValidatorFactory } from "../validators/category.validator";
 
 export type CategoryProps = {
   name: string;
@@ -29,10 +29,9 @@ export class Category extends Entity<CategoryProps> {
   // }
 
   static validate(props: CategoryProps) {
-    const validator = CategoryValidatorFactory.create()
+    const validator = CategoryValidatorFactory.create();
 
     validator.validate(props);
-
   }
 
   get name(): string {
