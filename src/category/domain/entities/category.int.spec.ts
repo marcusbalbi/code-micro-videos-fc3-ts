@@ -28,13 +28,17 @@ describe("Category integration tests", () => {
     test("invalid category when create with description", () => {
       expect(() => {
         new Category({ name: "test", description: 5 as any });
-      }).toThrow("The description must be a string");
+      }).containsErrorMessages({
+        description: ["description must be a string"],
+      });
     });
 
     test("invalid category when create with is_active", () => {
       expect(() => {
         new Category({ name: "test", is_active: 5 as any });
-      }).toThrow("The is_active must be a boolean");
+      }).containsErrorMessages({
+        is_active: ["is_active must be a boolean value"],
+      });
     });
 
     test("valid category", () => {
@@ -54,26 +58,43 @@ describe("Category integration tests", () => {
 
       expect(() => {
         category.update("", "");
-      }).toThrow("The name is required");
+      }).containsErrorMessages({
+        name: ["name should not be empty"],
+      });
 
       expect(() => {
         category.update(4 as any, "");
-      }).toThrow("The name must be a string");
+      }).containsErrorMessages({
+        name: [
+          "name must be a string",
+          "name must be shorter than or equal to 255 characters",
+        ],
+      });
 
       expect(() => {
         category.update(null as any, "");
-      }).toThrow("The name is required");
+      }).containsErrorMessages({
+        name: [
+          "name should not be empty",
+          "name must be a string",
+          "name must be shorter than or equal to 255 characters",
+        ],
+      });
 
       expect(() => {
         category.update("a".repeat(256) as any, "");
-      }).toThrow("The name must be less or equal than  255 chars");
+      }).containsErrorMessages({
+        name: ["name must be shorter than or equal to 255 characters"],
+      });
     });
 
     test("invalid description", () => {
       const category = new Category({ name: "Movie" });
       expect(() => {
         category.update("test", 5 as any);
-      }).toThrow("The description must be a string");
+      }).containsErrorMessages({
+        description: ["description must be a string"],
+      });
     });
 
     test("valid category", () => {

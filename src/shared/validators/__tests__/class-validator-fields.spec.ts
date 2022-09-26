@@ -19,6 +19,7 @@ describe("Class Validator Fields unit tests", () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(stubValidator.validatedData).toBeNull();
     expect(stubValidator.errors).toStrictEqual({ field: ["Required"] });
+    spy.mockClear();
   });
   test("validate without errors", () => {
     const spy = jest.spyOn(libClassValidator, "validateSync");
@@ -28,5 +29,6 @@ describe("Class Validator Fields unit tests", () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(stubValidator.validatedData).toStrictEqual({ field: "a" });
     expect(stubValidator.errors).toStrictEqual({});
+    spy.mockClear();
   });
 });

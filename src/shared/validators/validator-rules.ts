@@ -1,4 +1,4 @@
-import ValidationError from "../../shared/errors/validation-error";
+import {ValidationError} from "../../shared/errors/validation-error";
 
 
 export default class ValidatorRules {
