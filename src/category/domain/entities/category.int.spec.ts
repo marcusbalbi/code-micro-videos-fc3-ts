@@ -5,15 +5,24 @@ describe("Category integration tests", () => {
     test("invalid category when create with name", () => {
       expect(() => {
         new Category({ name: "" });
-      }).toThrow("The name is required");
+      }).containsErrorMessages({
+        name: ["name should not be empty"],
+      });
 
       expect(() => {
         new Category({ name: 5 as any });
-      }).toThrow("The name must be a string");
+      }).containsErrorMessages({
+        name: [
+          "name must be a string",
+          "name must be shorter than or equal to 255 characters",
+        ],
+      });
 
       expect(() => {
         new Category({ name: "a".repeat(256) });
-      }).toThrow("The name must be less or equal than  255 chars");
+      }).containsErrorMessages({
+        name: ["name must be shorter than or equal to 255 characters"],
+      });
     });
 
     test("invalid category when create with description", () => {
@@ -67,15 +76,15 @@ describe("Category integration tests", () => {
       }).toThrow("The description must be a string");
     });
 
-      test("valid category", () => {
-        const category = new Category({
-          name: "Movie",
-          description: "Movie 4",
-          is_active: true,
-        });
-        expect(() => {
-          category.update("Movie2")
-        }).not.toThrow();
+    test("valid category", () => {
+      const category = new Category({
+        name: "Movie",
+        description: "Movie 4",
+        is_active: true,
       });
+      expect(() => {
+        category.update("Movie2");
+      }).not.toThrow();
+    });
   });
 });

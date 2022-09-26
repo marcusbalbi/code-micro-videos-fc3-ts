@@ -1,40 +1,61 @@
 import { FieldsErrors } from "../validators/validator-fields.interface";
 import { ClassValidatorField } from "../validators/class-validator-fields";
 import expectImport from "expect";
+import { EntityValidationError } from "shared/errors/validation-error";
 
-type Expected = {
-  validator: ClassValidatorField<any>;
-  data: any;
-};
+type Expected =
+  | {
+      validator: ClassValidatorField<any>;
+      data: any;
+    }
+  | (() => any);
 
 expect.extend({
   containsErrorMessages(expected: Expected, received: FieldsErrors) {
-    const { validator, data } = expected;
+    if (typeof expected === "function") {
+      try {
+        expected();
+        return validValidation();
+      } catch (e) {
+        const error = e as EntityValidationError;
+        return invalidValidation(received, error.errors);
+      }
+    } else {
+      const { validator, data } = expected;
 
-    const isValid = validator.validate(data);
+      const isValid = validator.validate(data);
 
-    if (isValid) {
-      return {
-        pass: false,
-        message: () => `The data is valid`,
-      };
+      if (isValid) {
+        return validValidation();
+      }
+
+      return invalidValidation(received, validator.errors);
     }
-
-    const isMatch = expectImport
-      .objectContaining(received)
-      .asymmetricMatch(validator.errors);
-
-    if (isMatch) {
-      return { pass: true, message: () => "" };
-    }
-
-    const jsonReceibed = JSON.stringify(received);
-    const jsonErrors = JSON.stringify(expected.validator.errors);
-
-    return {
-      pass: false,
-      message: () =>
-        `The Validation erros not contains ${jsonReceibed}. Current: ${jsonErrors}`,
-    };
   },
 });
+
+const validValidation = () => {
+  return {
+    pass: false,
+    message: () => `The data is valid`,
+  };
+};
+
+const invalidValidation = (received: FieldsErrors, errors: FieldsErrors) => {
+  const isMatch = expectImport
+    .objectContaining(received)
+    .asymmetricMatch(errors);
+
+  if (isMatch) {
+    return { pass: true, message: () => "" };
+  }
+
+  const jsonReceibed = JSON.stringify(received);
+  const jsonErrors = JSON.stringify(errors);
+
+  return {
+    pass: false,
+    message: () =>
+      `The Validation erros not contains ${jsonReceibed}. Current: ${jsonErrors}`,
+  };
+};

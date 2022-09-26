@@ -1,4 +1,3 @@
-import { Category } from "../entities/category";
 import {
   CategoryRules,
   CategoryValidator,

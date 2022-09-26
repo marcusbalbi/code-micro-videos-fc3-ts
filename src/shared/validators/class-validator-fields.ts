@@ -5,6 +5,8 @@ import ValidatorFieldsInterface, { FieldsErrors } from "./validator-fields.inter
 export abstract class ClassValidatorField<PropsValidated>
   implements ValidatorFieldsInterface<PropsValidated> {
   errors: FieldsErrors = {};
+  protected valid: boolean | undefined;
+
   validatedData: PropsValidated | null = null;
   validate(data: any): boolean {
     const errors = validateSync(data);
@@ -13,11 +15,17 @@ export abstract class ClassValidatorField<PropsValidated>
         const field = error.property;
         this.errors[field] = Object.values(error.constraints || {});
       }
-      return false;
+      this.valid = false;
     } else {
       this.validatedData = data;
-      return true;
+      this.valid = true;
     }
+    return this.valid;
+  }
+
+  isValid(): boolean {
+    if (this.valid === undefined) return false;
+    return this.valid;
   }
     
   }
