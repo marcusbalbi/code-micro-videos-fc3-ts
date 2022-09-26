@@ -13,7 +13,6 @@ describe("Category Validator tests", () => {
   });
 
   test("invalidation cases for name field", () => {
-    //@ts-ignore
     expect({ validator, data: {} }).containsErrorMessages({
       name: [
         "name should not be empty",
@@ -21,36 +20,70 @@ describe("Category Validator tests", () => {
         "name must be shorter than or equal to 255 characters",
       ],
     });
-    //let isValid = validator.validate({} as any);
-    // expect(isValid).toBeFalsy();
-    // expect(validator.errors["name"]).toStrictEqual([
-    //   "name should not be empty",
-    //   "name must be a string",
-    //   "name must be shorter than or equal to 255 characters",
-    // ]);
 
-    // isValid = validator.validate({ name: "" });
-    // expect(isValid).toBeFalsy();
-    // expect(validator.errors["name"]).toStrictEqual([
-    //   "name should not be empty",
-    // ]);
+    expect({ validator, data: { name: "" } }).containsErrorMessages({
+      name: ["name should not be empty"],
+    });
+    expect({ validator, data: { name: 5 as any } }).containsErrorMessages({
+      name: [
+        "name must be a string",
+        "name must be shorter than or equal to 255 characters",
+      ],
+    });
 
-    // isValid = validator.validate({ name: 5 as any });
-    // expect(isValid).toBeFalsy();
-    // expect(validator.errors["name"]).toStrictEqual([
-    //   "name must be a string",
-    //   "name must be shorter than or equal to 255 characters",
-    // ]);
+    expect({
+      validator,
+      data: { name: "teste".repeat(52) },
+    }).containsErrorMessages({
+      name: ["name must be shorter than or equal to 255 characters"],
+    });
+  });
 
-    // isValid = validator.validate({ name: "teste".repeat(52) });
-    // expect(isValid).toBeFalsy();
-    // expect(validator.errors["name"]).toStrictEqual([
-    //   "name must be shorter than or equal to 255 characters",
-    // ]);
+  test("invalidation cases for description field", () => {
+    expect({
+      validator,
+      data: { name: "valid name", description: 5 },
+    }).containsErrorMessages({
+      description: ["description must be a string"],
+    });
+
+    expect({
+      validator,
+      data: { name: "valid name", description: true },
+    }).containsErrorMessages({
+      description: ["description must be a string"],
+    });
+  });
+
+  test("invalidation cases for is_active field", () => {
+    expect({
+      validator,
+      data: { name: "valid name", is_active: 5 },
+    }).containsErrorMessages({
+      is_active: ["is_active must be a boolean value"],
+    });
+
+    expect({
+      validator,
+      data: { name: "valid name", is_active: 0 },
+    }).containsErrorMessages({
+      is_active: ["is_active must be a boolean value"],
+    });
+    expect({
+      validator,
+      data: { name: "valid name", is_active: 1 },
+    }).containsErrorMessages({
+      is_active: ["is_active must be a boolean value"],
+    });
+    expect({
+      validator,
+      data: { name: "valid name", is_active: "true" },
+    }).containsErrorMessages({
+      is_active: ["is_active must be a boolean value"],
+    });
   });
 
   test("valid cases for fields", () => {
-
     const arrange = [
       { name: "teste" },
       { name: "teste", description: undefined as any },
@@ -59,12 +92,9 @@ describe("Category Validator tests", () => {
       { name: "teste", is_active: false },
     ];
 
-    for(const item of arrange) {
+    for (const item of arrange) {
       expect(validator.validate(item)).toBeTruthy();
-      expect(validator.validatedData).toStrictEqual(
-        new CategoryRules(item)
-      );
-
+      expect(validator.validatedData).toStrictEqual(new CategoryRules(item));
     }
   });
 });
