@@ -1,4 +1,4 @@
-import NotFoundError from "shared/errors/not-found-error";
+import NotFoundError from "../../errors/not-found-error";
 import Entity from "../entities/entity";
 import uniqueEntityId from "../value-objects/unique-entity-id";
 import { RepositoryInterface } from "./repository-contracts";
