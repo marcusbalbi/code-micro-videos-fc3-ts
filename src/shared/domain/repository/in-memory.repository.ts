@@ -20,7 +20,7 @@ export default abstract class InMemoryRepository<E extends Entity>
   async update(entity: E): Promise<void> {
     const item = await this._get(entity.id);
     const idx = this.items.findIndex((e) => e.id === entity.id);
-    this.items[idx] = item;
+    this.items[idx] = entity;
   }
   async delete(id: string | uniqueEntityId): Promise<void> {
     const item = await this._get(id);
@@ -29,9 +29,10 @@ export default abstract class InMemoryRepository<E extends Entity>
   }
 
   protected async _get(id: string | uniqueEntityId): Promise<E> {
-    const item = this.items.find((e) => e.id === id);
+    const _id = `${ id }`
+    const item = this.items.find((e) => e.id === _id);
     if (!item) {
-      throw new NotFoundError(`Entity not found using ID: ${ id }`);
+      throw new NotFoundError(`Entity not found using ID: ${ _id }`);
     }
 
     return item;

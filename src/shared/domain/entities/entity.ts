@@ -1,7 +1,7 @@
 import UniqueEntityId from "../value-objects/unique-entity-id";
 
 export default abstract class Entity<T = any> {
-  protected _id: UniqueEntityId;
+  readonly _id: UniqueEntityId;
   public readonly props: T;
   constructor(props: T, id?: UniqueEntityId) {
     this._id = id || new UniqueEntityId();
