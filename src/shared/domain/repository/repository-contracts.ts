@@ -59,7 +59,7 @@ export class SearchParams {
     }
   }
 
-  get sort() {
+  get sort(): string | null {
     return this._sort;
   }
 
@@ -71,7 +71,7 @@ export class SearchParams {
     }
   }
 
-  get sort_dir() {
+  get sort_dir(): string | null {
     return this._sort_dir;
   }
 
@@ -84,7 +84,7 @@ export class SearchParams {
     this._sort_dir = (['asc', 'desc'].includes(dir) ? dir : 'asc') as SortDirection
   }
 
-  get filter() {
+  get filter(): string | null {
     return this._filter;
   }
 

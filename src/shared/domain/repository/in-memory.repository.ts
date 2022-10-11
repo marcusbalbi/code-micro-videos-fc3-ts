@@ -1,7 +1,12 @@
 import NotFoundError from "../../errors/not-found-error";
 import Entity from "../entities/entity";
 import uniqueEntityId from "../value-objects/unique-entity-id";
-import { RepositoryInterface, SearchableRepositoryInterface } from "./repository-contracts";
+import {
+  RepositoryInterface,
+  SearchableRepositoryInterface,
+  SearchParams,
+  SearchResult,
+} from "./repository-contracts";
 
 export abstract class InMemoryRepository<E extends Entity>
   implements RepositoryInterface<E>
@@ -29,10 +34,10 @@ export abstract class InMemoryRepository<E extends Entity>
   }
 
   protected async _get(id: string | uniqueEntityId): Promise<E> {
-    const _id = `${ id }`
+    const _id = `${id}`;
     const item = this.items.find((e) => e.id === _id);
     if (!item) {
-      throw new NotFoundError(`Entity not found using ID: ${ _id }`);
+      throw new NotFoundError(`Entity not found using ID: ${_id}`);
     }
 
     return item;
@@ -41,9 +46,40 @@ export abstract class InMemoryRepository<E extends Entity>
 
 export abstract class InMemorySearchableRepository<E extends Entity>
   extends InMemoryRepository<E>
-  implements SearchableRepositoryInterface<E, any, any> {
-    
-  search(props: any): Promise<any> {
-    throw new Error("Method not implemented.");
+  implements SearchableRepositoryInterface<E>
+{
+  async search(props: SearchParams): Promise<SearchResult<E>> {
+    const itemsFiltered = await this.applyFilter(this.items, props.filter);
+    const itemsSorted = await this.applySort(
+      itemsFiltered,
+      props.sort,
+      props.sort_dir
+    );
+    const itemsPaginated = await this.applyPaginate(
+      itemsSorted,
+      props.page,
+      props.per_page
+    );
+    return new SearchResult({
+      items: itemsPaginated,
+      total: itemsFiltered.length,
+      current_page: props.page,
+      per_page: props.per_page,
+      sort: props.sort,
+      sort_dir: props.sort_dir,
+      filter: props.filter;
+    });
   }
+
+  protected abstract applyFilter(items: E[], filter: string | null): Promise<E[]>;
+  protected abstract applySort(
+    items: E[],
+    sort: string | null,
+    sort_dir: string | null
+  ): Promise<E[]>;
+  protected abstract applyPaginate(
+    items: E[],
+    page: SearchParams["page"],
+    per_page: SearchParams["per_page"]
+  ): Promise<E[]>;
 }
