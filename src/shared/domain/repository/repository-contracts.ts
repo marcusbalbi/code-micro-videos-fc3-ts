@@ -26,11 +26,11 @@ export class SearchParams {
   protected _sort_dir: SortDirection | null;
   protected _filter: string;
   constructor(props: SearchProps = {}) {
-    this._page = props.page;
-    this._per_page = props.per_page;
-    this._sort = props.sort;
-    this._sort_dir = props.sort_dir;
-    this._filter = props.filter;
+    this.page = props.page;
+    this.per_page = props.per_page;
+    this.sort = props.sort;
+    this.sort_dir = props.sort_dir;
+    this.filter = props.filter;
   }
 
   get page() {
@@ -38,11 +38,12 @@ export class SearchParams {
   }
 
   private set page(value: number) {
-    const _page = parseInt(value.toString());
+    const _page = parseInt(`${value}`);
     if (isNaN(_page) || _page <= 0) {
       this._page = 1;
+    } else {
+      this._page = _page;
     }
-    this._page = value;
   }
 
   get per_page() {
@@ -50,11 +51,12 @@ export class SearchParams {
   }
 
   private set per_page(value: number) {
-    const _per_page = parseInt(value.toString());
+    const _per_page = parseInt(`${value}`);
     if (isNaN(_per_page) || _per_page <= 0) {
       this._per_page = 15;
+    } else {
+      this._per_page = _per_page;
     }
-    this._per_page = value;
   }
 
   get sort() {
@@ -64,8 +66,9 @@ export class SearchParams {
   private set sort(value: string | null) {
     if (value === null || value === undefined || value === "") {
       this._sort = null;
+    } else {
+      this._sort = `${value}`;
     }
-    this._sort = `${value}`;
   }
 
   get sort_dir() {
@@ -74,9 +77,10 @@ export class SearchParams {
 
   private set sort_dir(value: string | null) {
     if (!value || !["asc", "desc"].includes(value.toLowerCase())) {
-      this._sort_dir = "asc";
+      this._sort_dir = null;
+    } else {
+      this._sort_dir = `${value}`.toLowerCase() as SortDirection;
     }
-    this.sort_dir = `${value}`.toLowerCase();
   }
 
   get filter() {
@@ -86,8 +90,9 @@ export class SearchParams {
   private set filter(value: string | null) {
     if (value === null || value === undefined || value === "") {
       this._filter = null;
+    } else {
+      this._filter = `${value}`;
     }
-    this._filter = `${value}`;
   }
 }
 
