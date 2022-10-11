@@ -76,11 +76,12 @@ export class SearchParams {
   }
 
   private set sort_dir(value: string | null) {
-    if (!value || !["asc", "desc"].includes(value.toLowerCase())) {
+    if (!this.sort) {
       this._sort_dir = null;
-    } else {
-      this._sort_dir = `${value}`.toLowerCase() as SortDirection;
+      return;
     }
+    const dir = `${ value }`.toLowerCase();
+    this._sort_dir = (['asc', 'desc'].includes(dir) ? dir : 'asc') as SortDirection
   }
 
   get filter() {
