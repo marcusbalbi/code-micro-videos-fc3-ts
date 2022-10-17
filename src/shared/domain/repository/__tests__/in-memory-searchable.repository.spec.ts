@@ -93,6 +93,35 @@ describe("InMemorySearchableRepository unit tests", () => {
       expect(result).toStrictEqual([items[2], items[0], items[1]]);
     });
   });
-  describe("applyPaginate", () => {});
+  describe("applyPaginate", () => {
+    const items = [
+      new StubEntity({ name: "a", price: 5 }),
+      new StubEntity({ name: "b", price: 1 }),
+      new StubEntity({ name: "c", price: 1 }),
+      new StubEntity({ name: "d", price: 1 }),
+      new StubEntity({ name: "e", price: 1 }),
+    ];
+
+    test('paginate invalid', async () => {
+      let result = await repository["applyPaginate"](items, 4, 2);
+      expect(result.length).toBe(0);
+
+      result = await repository["applyPaginate"](items, 0, 2);
+      expect(result.length).toBe(0);
+    })
+    test("paginate", async () => {
+      let result = await repository["applyPaginate"](items, 1, 2);
+      expect(result.length).toBe(2)
+      expect(result).toStrictEqual([items[0], items[1]]);
+
+      result = await repository["applyPaginate"](items, 2, 2);
+      expect(result.length).toBe(2);
+      expect(result).toStrictEqual([items[2], items[3]]);
+
+      result = await repository["applyPaginate"](items, 3, 2);
+      expect(result.length).toBe(1);
+      expect(result).toStrictEqual([items[4]]);
+    });
+  });
   describe("search", () => {});
 });
