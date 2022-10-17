@@ -12,15 +12,15 @@ class StubInMemorySearchableRepository extends InMemorySearchableRepository<Stub
   sortableFields: string[] = ["name"];
 
   protected async applyFilter(
-    items: StubEntity[],
+    items: StubEntity[] | null,
     filter: string
   ): Promise<StubEntity[]> {
-    if (!filter) return this.items;
+    if (!filter) return items;
 
-    return this.items.filter((i) => {
+    return items.filter((i) => {
       return (
-        i.props.name.toLowerCase().includes(filter) ||
-        i.props.price.toString() === filter
+        i.props.name.toLowerCase().includes(filter.toLowerCase()) ||
+        i.props.price.toString() === filter.toLowerCase()
       );
     });
   }
@@ -32,6 +32,38 @@ describe("InMemorySearchableRepository unit tests", () => {
     repository = new StubInMemorySearchableRepository();
   })
   describe("applyFilter", () => {
+    test('return items if filter is empty', async () => {
+      const items = [
+        new StubEntity({ name: 'name value', price: 5 }),
+        new StubEntity({ name: 'john doe', price: 5 }),
+      ];
+      const spyFilterMethod = jest.spyOn(items, 'filter');
+      const result  = await repository['applyFilter'](items, null);
+      expect(result).toStrictEqual(items);
+      expect(spyFilterMethod).not.toHaveBeenCalled();
+    });
+    test('filter using param', async () => {
+        const items = [
+          new StubEntity({ name: "name value", price: 5 }),
+          new StubEntity({ name: "john doe", price: 1 }),
+          new StubEntity({ name: "Jane doe", price: 1 }),
+        ];
+        const spyFilterMethod = jest.spyOn(items, "filter");
+        let result = await repository["applyFilter"](items, "DOE");
+        expect(result.length).toBe(2)
+        expect(result[0]).toStrictEqual(items[1]);
+        expect(result[1]).toStrictEqual(items[2]);
+        expect(spyFilterMethod).toHaveBeenCalled();
+
+        result = await repository["applyFilter"](items, "5");
+        expect(result.length).toBe(1);
+        expect(result[0]).toStrictEqual(items[0]);
+        expect(spyFilterMethod).toHaveBeenCalledTimes(2);
+
+        result = await repository["applyFilter"](items, "empty");
+        expect(result.length).toBe(0);
+        expect(spyFilterMethod).toHaveBeenCalledTimes(3);
+    })
   });
 
   describe("applySort", () => {});
