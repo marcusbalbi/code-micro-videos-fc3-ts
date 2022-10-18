@@ -6,6 +6,7 @@ export class CategoryInMemoryRepository
   extends InMemorySearchableRepository<Category>
   implements CategoryRepository
 {
+  sortableFields: string[] = ['name', 'created_at'];
   protected async applyFilter(
     items: Category[],
     filter: CategoryFilter
@@ -13,9 +14,7 @@ export class CategoryInMemoryRepository
     if (!filter) return items;
 
     return items.filter((i) => {
-      return (
-        i.props.name.toLowerCase().includes(filter.toLowerCase())
-      );
+      return i.props.name.toLowerCase().startsWith(filter.toLowerCase());
     });
   }
 }

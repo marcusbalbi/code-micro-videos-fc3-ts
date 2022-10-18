@@ -37,7 +37,7 @@ export class SearchParams<Filter = string> {
     return this._page;
   }
 
-  private set page(value: number) {
+  protected set page(value: number) {
     const _page = parseInt(`${value}`);
     if (isNaN(_page) || _page <= 0) {
       this._page = 1;
@@ -50,7 +50,7 @@ export class SearchParams<Filter = string> {
     return this._per_page;
   }
 
-  private set per_page(value: number) {
+  protected set per_page(value: number) {
     const _per_page = parseInt(`${value}`);
     if (isNaN(_per_page) || _per_page <= 0) {
       this._per_page = 15;
@@ -63,7 +63,7 @@ export class SearchParams<Filter = string> {
     return this._sort;
   }
 
-  private set sort(value: string | null) {
+  protected set sort(value: string | null) {
     if (value === null || value === undefined || value === "") {
       this._sort = null;
     } else {
@@ -75,7 +75,7 @@ export class SearchParams<Filter = string> {
     return this._sort_dir;
   }
 
-  private set sort_dir(value: string | null) {
+  protected set sort_dir(value: string | null) {
     if (!this.sort) {
       this._sort_dir = null;
       return;
@@ -88,7 +88,7 @@ export class SearchParams<Filter = string> {
     return this._filter;
   }
 
-  private set filter(value: Filter | null) {
+  protected set filter(value: Filter | null) {
     if (value === null || value === undefined || (value as unknown) === "") {
       this._filter = null;
     } else {

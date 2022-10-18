@@ -1,6 +1,6 @@
 import Entity from "../../entities/entity";
 import UniqueEntityId from "../../value-objects/unique-entity-id";
-import {InMemoryRepository} from "../in-memory.repository";
+import { InMemoryRepository } from "../in-memory.repository";
 
 type StubProps = {
   name: string;
@@ -91,6 +91,5 @@ describe("InMemory Repository unit tests", () => {
     await repository.insert(entity);
     await repository.delete(entity._id);
     expect(repository.items.length).toBe(0);
-
   });
 });
