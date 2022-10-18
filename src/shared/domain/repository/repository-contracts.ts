@@ -19,13 +19,13 @@ export type SearchProps<Filter = string> = {
   filter?: Filter | null;
 };
 
-export class SearchParams {
+export class SearchParams<Filter = string> {
   protected _page: number;
   protected _per_page: number = 15;
   protected _sort: string | null;
   protected _sort_dir: SortDirection | null;
-  protected _filter: string;
-  constructor(props: SearchProps = {}) {
+  protected _filter: Filter;
+  constructor(props: SearchProps<Filter> = {}) {
     this.page = props.page;
     this.per_page = props.per_page;
     this.sort = props.sort;
@@ -84,15 +84,15 @@ export class SearchParams {
     this._sort_dir = (['asc', 'desc'].includes(dir) ? dir : 'asc') as SortDirection
   }
 
-  get filter(): string | null {
+  get filter(): Filter | null {
     return this._filter;
   }
 
-  private set filter(value: string | null) {
-    if (value === null || value === undefined || value === "") {
+  private set filter(value: Filter | null) {
+    if (value === null || value === undefined || (value as unknown) === "") {
       this._filter = null;
     } else {
-      this._filter = `${value}`;
+      this._filter = `${value}` as any;
     }
   }
 }
@@ -146,7 +146,7 @@ export interface SearchableRepositoryInterface<
   E extends Entity,
   Filter = string,
   SearchOutput =  SearchResult<E, Filter>,
-  SearchInput = SearchParams
+  SearchInput = SearchParams<Filter>
 > extends RepositoryInterface<E> {
   sortableFields: string[];
   search(props: SearchInput): Promise<SearchOutput>;
