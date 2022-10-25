@@ -1,7 +1,7 @@
 import { CategoryRepository } from "../../domain/repository/category.repository";
 import { CategoryOutputDto } from "../dto/category-output.dto";
-
-export default class GetCategoryUseCase {
+import UseCase from "../../../shared/application/use-case";
+export default class GetCategoryUseCase implements UseCase<Input, CategoryOutputDto> {
   private repository: CategoryRepository;
   constructor(repository: CategoryRepository) {
     this.repository = repository;
