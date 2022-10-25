@@ -53,6 +53,13 @@ export class Category extends Entity<CategoryProps> {
     this.props.description = value;
   }
 
+  get is_active () {
+    return this.props.is_active;
+  }
+  get created_at () {
+    return this.props.created_at;
+  }
+
   activate() {
     this.props.is_active = true;
   }
