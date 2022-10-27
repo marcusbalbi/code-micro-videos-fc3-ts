@@ -19,9 +19,11 @@ export default class ListCategoriesUseCase implements UseCase<Input, Output> {
 
   private toOutput(searchResult: CategorySearchResult): Output {
     return {
-      ...PaginationOutputMapper.toPaginationOutput(searchResult),
-      items: searchResult.items.map((item) => CategoryOutputMapper.toOutput(item)),
-    }
+      ...PaginationOutputMapper.toOutput(searchResult),
+      items: searchResult.items.map((item) =>
+        CategoryOutputMapper.toOutput(item)
+      ),
+    };
   }
 }
 
