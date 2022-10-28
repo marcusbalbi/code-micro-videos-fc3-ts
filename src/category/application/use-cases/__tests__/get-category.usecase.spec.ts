@@ -11,13 +11,12 @@ describe("GetCategoryUseCase unit test", () => {
     useCase = new GetCategoryUseCase(repository);
   });
 
-  test('get category throw error when entity not fodun', async () => {
+  test('get category throw error when entity not found', async () => {
     const spy = jest.spyOn(repository, "findById");
     expect( () => {
       return useCase.execute({ id: "invalid-id" });
     }).rejects.toThrow();
     expect(spy).toHaveBeenCalled();
-    
   });
   test('return a category', async () => {
     const spy = jest.spyOn(repository, 'findById');
