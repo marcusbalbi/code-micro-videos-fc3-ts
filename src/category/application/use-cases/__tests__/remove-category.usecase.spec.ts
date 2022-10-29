@@ -23,7 +23,7 @@ describe("RemoveCategoryUseCase unit test", () => {
     const category = new Category({ name: 'test' });
     repository.items.push(category);
     let output = await useCase.execute({ id: category.id });
-    expect(output).toBeTruthy();
+    expect(output).toBeUndefined();
     expect(repository.items.length).toBe(0)
     expect(spy).toHaveBeenCalled()
   });

@@ -1,4 +1,11 @@
-import { IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString, MaxLength } from "class-validator";
+import {
+  IsBoolean,
+  IsDate,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from "class-validator";
 import { ClassValidatorField } from "../../../shared/validators/class-validator-fields";
 import { CategoryProps } from "../entities/category";
 
@@ -27,7 +34,7 @@ export class CategoryRules {
 
 export class CategoryValidator extends ClassValidatorField<CategoryRules> {
   validate(data: CategoryProps): boolean {
-      return super.validate(new CategoryRules(data))
+    return super.validate(new CategoryRules(data));
   }
 }
 

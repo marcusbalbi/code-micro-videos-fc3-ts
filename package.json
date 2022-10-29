@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tsc": "tsc",
-    "tsc:check": "npm run tsc -- --notEmit",
+    "tsc:check": "npm run tsc --noEmit",
     "ts-node": "ts-node",
     "test": "jest",
     "test:cov": "npm run test -- --coverage"

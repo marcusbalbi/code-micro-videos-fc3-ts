@@ -6,9 +6,8 @@ export default class RemoveCategoryUseCase implements UseCase<Input, Output> {
     this.repository = repository;
   }
 
-  async execute(input: Input): Promise<Output> {
+  async execute(input: Input): Promise<void> {
     await this.repository.delete(input.id);
-    return true
   }
 }
 
@@ -16,4 +15,4 @@ export type Input = {
   id: string;
 };
 
-export type Output = boolean;
+export type Output = void;
