@@ -1,4 +1,4 @@
-import UniqueEntityId from "../value-objects/unique-entity-id";
+import UniqueEntityId from "@core/shared/domain/value-objects/unique-entity-id";
 
 export default abstract class Entity<T = any> {
   readonly _id: UniqueEntityId;
