@@ -4,9 +4,9 @@
       "syntax": "typescript",
       "decorators": true
     },
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "@core/*": ["./src/*"]
+      "@core/*": ["./*"]
     }
   }
 }

@@ -1,4 +1,4 @@
-import { SearchResult } from "../../domain/repository/repository-contracts";
+import { SearchResult } from "@core/shared/domain/repository/repository-contracts";
 import { PaginationOutputMapper } from "./pagination-output.dto";
 
 describe("Pagination output Dto unit test", () => {
