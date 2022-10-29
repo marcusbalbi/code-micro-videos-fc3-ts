@@ -1,7 +1,7 @@
 import { FieldsErrors } from "../validators/validator-fields.interface";
 import { ClassValidatorField } from "../validators/class-validator-fields";
 import expectImport from "expect";
-import { EntityValidationError } from "shared/errors/validation-error";
+import { EntityValidationError } from "../errors/validation-error";
 
 type Expected =
   | {

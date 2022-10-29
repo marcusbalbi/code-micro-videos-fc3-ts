@@ -1,6 +1,6 @@
-import { EntityValidationError } from "../../../shared/errors/validation-error";
-import Entity from "../../../shared/domain/entities/entity";
-import UniqueEntityId from "../../../shared/domain/value-objects/unique-entity-id";
+import Entity from "@core/shared/domain/entities/entity";
+import UniqueEntityId from "@core/shared/domain/value-objects/unique-entity-id";
+import { EntityValidationError } from "@core/shared/errors/validation-error";
 import { CategoryValidatorFactory } from "../validators/category.validator";
 
 export type CategoryProps = {
