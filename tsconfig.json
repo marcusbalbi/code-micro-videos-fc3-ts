@@ -11,11 +11,15 @@
     "strictNullChecks": false,
     "skipLibCheck": true,
     "strictPropertyInitialization": false,
+    "outDir": "./dist",
     "paths": {
       "@core/*": [
         "./*"
       ]
-    }
+    },
+    "plugins": [
+      { "transform": "typescript-transform-paths"}
+    ]
   },
   "include": ["src/"]
 }
