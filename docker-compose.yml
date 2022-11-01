@@ -6,3 +6,5 @@ services:
     container_name: code-micro-videos-fc3-ts-app
     volumes:
       - .:/home/node/app
+    ports:
+      - 3000:3000
