@@ -1,4 +1,4 @@
-import { SearchableRepositoryInterface, SearchParams, SearchProps, SearchResult } from "@core/shared/domain/repository/repository-contracts";
+import { SearchableRepositoryInterface, SearchParams, SearchProps, SearchResult } from "#core/shared/domain/repository/repository-contracts";
 import { Category } from "../entities/category";
 
 export type CategoryFilter = string;

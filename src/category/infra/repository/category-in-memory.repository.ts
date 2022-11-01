@@ -1,6 +1,6 @@
-import { Category } from "@core/category/domain/entities/category";
-import { CategoryFilter, CategoryRepository } from "@core/category/domain/repository/category.repository";
-import { InMemorySearchableRepository } from "@core/shared/domain/repository/in-memory.repository";
+import { Category } from "#core/category/domain/entities/category";
+import { CategoryFilter, CategoryRepository } from "#core/category/domain/repository/category.repository";
+import { InMemorySearchableRepository } from "#core/shared/domain/repository/in-memory.repository";
 
 export class CategoryInMemoryRepository
   extends InMemorySearchableRepository<Category>

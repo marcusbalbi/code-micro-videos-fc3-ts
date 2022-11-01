@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Admin do catalogo de videos",
   "main": "index.js",
+  "imports": {
+    "#core/*": "./dist/*.js"
+  },
   "scripts": {
     "tsc": "tsc",
     "tsc:check": "npm run tsc --noEmit",
