@@ -3,3 +3,4 @@ tsconfig.tsbuildinfo
 .env
 __coverage
 dist
+*.ts.bak
