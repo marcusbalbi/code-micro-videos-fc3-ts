@@ -1,15 +1,14 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-// import { CreateCategoryUseCase } from '@balbi/core/category/application';
-// import { CategoryInMemoryRepository } from '@balbi/core/dist/category/infra/repository';
+import { CreateCategoryUseCase } from '@balbi/core/category/application';
+// import { CategoryInMemoryRepository } from '@balbi/core/category/infra';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
   getHello(): string {
-    // const c = new CreateCategoryUseCase(new CategoryInMemoryRepository());
-    // c.execute({ name: 'j' });
+    console.log(CreateCategoryUseCase);
     return this.appService.getHello();
   }
 }
