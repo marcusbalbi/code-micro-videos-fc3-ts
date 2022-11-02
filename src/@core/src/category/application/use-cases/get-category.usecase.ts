@@ -2,7 +2,7 @@ import { CategoryRepository } from "#core/category/domain";
 import { CategoryInMemoryRepository } from "#core/category/infra";
 import UseCase from "#core/shared/application/use-case";
 import { CategoryOutputDto, CategoryOutputMapper } from "../dto/category-output.dto";
-export default class GetCategoryUseCase
+export class GetCategoryUseCase
   implements UseCase<InputGetCategoryUseCase, CategoryOutputDto>
 {
   private repository: CategoryRepository;

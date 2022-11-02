@@ -3,7 +3,7 @@ import { PaginationOutputDto, PaginationOutputMapper, SearchInputDto } from "#co
 import UseCase from "#core/shared/application/use-case";
 import { CategoryOutputDto, CategoryOutputMapper } from "../dto/category-output.dto";
 
-export default class ListCategoriesUseCase
+export class ListCategoriesUseCase
   implements UseCase<InputListCategoriesUseCase, OutputListCategoriesUseCase>
 {
   private repository: CategoryRepository;

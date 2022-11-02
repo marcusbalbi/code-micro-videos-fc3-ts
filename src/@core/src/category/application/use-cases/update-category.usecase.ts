@@ -2,7 +2,7 @@ import { CategoryRepository } from "#core/category/domain";
 import UseCase from "#core/shared/application/use-case";
 import { CategoryOutputDto, CategoryOutputMapper } from "../dto/category-output.dto";
 
-export default class UpdateCategoryUseCase
+export class UpdateCategoryUseCase
   implements UseCase<InputUpdateCategoryUseCase, CategoryOutputDto>
 {
   private repository: CategoryRepository;

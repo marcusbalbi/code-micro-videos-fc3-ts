@@ -3,9 +3,9 @@ import { Category } from "#core/category/domain/entities/category";
 export type CategoryOutputDto = {
   id: string;
   name: string;
-  description: string | null;
-  is_active: boolean;
-  created_at: Date;
+  description: string | undefined;
+  is_active: boolean | undefined;
+  created_at: Date | undefined;
 };
 
 export class CategoryOutputMapper {

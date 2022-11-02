@@ -1,7 +1,7 @@
 import { CategoryRepository } from "#core/category/domain";
 import UseCase from "#core/shared/application/use-case";
 
-export default class RemoveCategoryUseCase
+export class RemoveCategoryUseCase
   implements UseCase<InputRemoveCategoryUseCase, OutputRemoveCategoryUseCase>
 {
   private repository: CategoryRepository;

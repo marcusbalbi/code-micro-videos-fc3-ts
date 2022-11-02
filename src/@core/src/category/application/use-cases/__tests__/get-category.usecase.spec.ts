@@ -1,6 +1,6 @@
 import { Category } from "../../../domain/entities/category";
 import { CategoryInMemoryRepository } from "../../../infra/repository/category-in-memory.repository";
-import GetCategoryUseCase from "../get-category.usecase"
+import {GetCategoryUseCase} from "../get-category.usecase"
 
 describe("GetCategoryUseCase unit test", () => {
   let useCase: GetCategoryUseCase;
