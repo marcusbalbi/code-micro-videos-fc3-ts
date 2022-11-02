@@ -1,15 +1,16 @@
-import { CategoryRepository } from "../../domain/repository/category.repository";
-import { Category } from "../../domain/entities/category";
+import { CategoryRepository } from "#core/category/domain";
+import UseCase from "#core/shared/application/use-case";
 import { CategoryOutputDto, CategoryOutputMapper } from "../dto/category-output.dto";
-import UseCase from "../../../shared/application/use-case";
 
-export default class UpdateCategoryUseCase implements UseCase<Input, CategoryOutputDto> {
+export default class UpdateCategoryUseCase
+  implements UseCase<InputUpdateCategoryUseCase, CategoryOutputDto>
+{
   private repository: CategoryRepository;
   constructor(repository: CategoryRepository) {
     this.repository = repository;
   }
 
-  async execute(input: Input): Promise<CategoryOutputDto> {
+  async execute(input: InputUpdateCategoryUseCase): Promise<CategoryOutputDto> {
     const entity = await this.repository.findById(input.id);
     entity.update(input.name, input.description);
 
@@ -25,9 +26,9 @@ export default class UpdateCategoryUseCase implements UseCase<Input, CategoryOut
   }
 }
 
-export type Input = {
+export type InputUpdateCategoryUseCase = {
   id: string;
   name: string;
   description?: string;
   is_active?: boolean;
-}
+};

@@ -1,23 +1,28 @@
-import { CategoryRepository, CategorySearchParams, CategorySearchResult } from "../../domain/repository/category.repository";
+import { CategoryRepository, CategorySearchParams, CategorySearchResult } from "#core/category/domain";
+import { PaginationOutputDto, PaginationOutputMapper, SearchInputDto } from "#core/shared/application";
+import UseCase from "#core/shared/application/use-case";
 import { CategoryOutputDto, CategoryOutputMapper } from "../dto/category-output.dto";
-import UseCase from "../../../shared/application/use-case";
-import { SearchInputDto } from "../../../shared/application/dto/search-input.dto";
-import { PaginationOutputDto, PaginationOutputMapper } from "../../../shared/application/dto/pagination-output.dto";
 
-export default class ListCategoriesUseCase implements UseCase<Input, Output> {
+export default class ListCategoriesUseCase
+  implements UseCase<InputListCategoriesUseCase, OutputListCategoriesUseCase>
+{
   private repository: CategoryRepository;
   constructor(repository: CategoryRepository) {
     this.repository = repository;
   }
 
-  async execute(input: Input): Promise<Output> {
+  async execute(
+    input: InputListCategoriesUseCase
+  ): Promise<OutputListCategoriesUseCase> {
     const params = new CategorySearchParams(input);
     const searchResult = await this.repository.search(params);
 
-    return this.toOutput(searchResult)
+    return this.toOutput(searchResult);
   }
 
-  private toOutput(searchResult: CategorySearchResult): Output {
+  private toOutput(
+    searchResult: CategorySearchResult
+  ): OutputListCategoriesUseCase {
     return {
       ...PaginationOutputMapper.toOutput(searchResult),
       items: searchResult.items.map((item) =>
@@ -27,6 +32,6 @@ export default class ListCategoriesUseCase implements UseCase<Input, Output> {
   }
 }
 
-export type Input = SearchInputDto;
+export type InputListCategoriesUseCase = SearchInputDto;
 
-export type Output = PaginationOutputDto<CategoryOutputDto>
+export type OutputListCategoriesUseCase = PaginationOutputDto<CategoryOutputDto>;

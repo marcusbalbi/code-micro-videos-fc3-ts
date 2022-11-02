@@ -13,7 +13,9 @@
     "test": "jest",
     "test:cov": "npm run test -- --coverage",
     "cti": "cti",
-    "cti:core": "./cti.sh"
+    "cti:core": "./cti.sh",
+    "build": "tsc -b ./tsconfig.json",
+    "build:w": "tsc -b ./tsconfig.json -w"
   },
   "keywords": [],
   "author": "",

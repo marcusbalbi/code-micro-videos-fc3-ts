@@ -1,18 +1,21 @@
-import { CategoryRepository } from "../../domain/repository/category.repository";
-import UseCase from "../../../shared/application/use-case";
-export default class RemoveCategoryUseCase implements UseCase<Input, Output> {
+import { CategoryRepository } from "#core/category/domain";
+import UseCase from "#core/shared/application/use-case";
+
+export default class RemoveCategoryUseCase
+  implements UseCase<InputRemoveCategoryUseCase, OutputRemoveCategoryUseCase>
+{
   private repository: CategoryRepository;
   constructor(repository: CategoryRepository) {
     this.repository = repository;
   }
 
-  async execute(input: Input): Promise<void> {
+  async execute(input: InputRemoveCategoryUseCase): Promise<void> {
     await this.repository.delete(input.id);
   }
 }
 
-export type Input = {
+export type InputRemoveCategoryUseCase = {
   id: string;
 };
 
-export type Output = void;
+export type OutputRemoveCategoryUseCase = void;
