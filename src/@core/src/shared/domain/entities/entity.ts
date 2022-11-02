@@ -1,6 +1,6 @@
-import UniqueEntityId from "#core/shared/domain/value-objects/unique-entity-id";
+import { UniqueEntityId } from "../value-objects";
 
-export default abstract class Entity<T = any> {
+export abstract class Entity<T = any> {
   readonly _id: UniqueEntityId;
   public readonly props: T;
   constructor(props: T, id?: UniqueEntityId) {

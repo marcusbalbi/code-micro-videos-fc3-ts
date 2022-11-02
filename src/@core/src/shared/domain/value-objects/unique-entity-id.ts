@@ -1,8 +1,8 @@
-import InvalidUiidError from "../../errors/invalid-uuid-error";
+import { InvalidUiidError } from "#core/shared/errors/invalid-uuid-error";
 import { v4, validate as uuidValidate } from "uuid";
 import { SimpleValueObject } from "./value-object";
 
-export default class UniqueEntityId extends SimpleValueObject {
+export class UniqueEntityId extends SimpleValueObject {
   constructor(id: string | null = null) {
     super( id ?? v4());
     this.validate();

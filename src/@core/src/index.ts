@@ -1,5 +1,7 @@
-import { Category } from "#core/category/domain/entities/category";
+import { CreateCategoryUseCase } from "./category/application";
+import { CategoryInMemoryRepository } from "./category/infra";
 
-const p = new Category({ name: "a" });
+
+const p = new CreateCategoryUseCase(new CategoryInMemoryRepository());
 
 console.log(p);

@@ -1,5 +1,5 @@
-import InvalidUiidError from "../../../errors/invalid-uuid-error";
-import UniqueEntityId from "../unique-entity-id";
+import { InvalidUiidError } from "#core/shared/errors/invalid-uuid-error";
+import { UniqueEntityId } from "../unique-entity-id";
 
 describe("test unique-entity-id", () => {
   it("should throw error when uuid is invalid", () => {

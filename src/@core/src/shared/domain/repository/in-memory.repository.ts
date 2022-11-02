@@ -1,6 +1,6 @@
-import NotFoundError from "../../errors/not-found-error";
-import Entity from "../entities/entity";
-import uniqueEntityId from "../value-objects/unique-entity-id";
+import { NotFoundError } from "#core/shared/errors/not-found-error";
+import { Entity } from "../entities";
+import { UniqueEntityId } from "../value-objects";
 import {
   RepositoryInterface,
   SearchableRepositoryInterface,
@@ -16,7 +16,7 @@ export abstract class InMemoryRepository<E extends Entity>
   async insert(entity: E): Promise<void> {
     this.items.push(entity);
   }
-  async findById(id: string | uniqueEntityId): Promise<E> {
+  async findById(id: string | UniqueEntityId): Promise<E> {
     return this._get(id);
   }
   async findAll(): Promise<E[]> {
@@ -27,13 +27,13 @@ export abstract class InMemoryRepository<E extends Entity>
     const idx = this.items.findIndex((e) => e.id === entity.id);
     this.items[idx] = entity;
   }
-  async delete(id: string | uniqueEntityId): Promise<void> {
+  async delete(id: string | UniqueEntityId): Promise<void> {
     const item = await this._get(id);
     const idx = this.items.findIndex((e) => e.id === item.id);
     this.items.splice(idx, 1);
   }
 
-  protected async _get(id: string | uniqueEntityId): Promise<E> {
+  protected async _get(id: string | UniqueEntityId): Promise<E> {
     const _id = `${id}`;
     const item = this.items.find((e) => e.id === _id);
     if (!item) {

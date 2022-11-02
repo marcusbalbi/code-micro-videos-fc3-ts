@@ -1,6 +1,5 @@
 import { CategoryRepository, CategorySearchParams, CategorySearchResult } from "#core/category/domain";
-import { PaginationOutputDto, PaginationOutputMapper, SearchInputDto } from "#core/shared/application";
-import UseCase from "#core/shared/application/use-case";
+import { PaginationOutputDto, PaginationOutputMapper, SearchInputDto, UseCase } from "#core/shared/application";
 import { CategoryOutputDto, CategoryOutputMapper } from "../dto/category-output.dto";
 
 export class ListCategoriesUseCase

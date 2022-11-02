@@ -1,6 +1,6 @@
 import { CategoryRepository } from "#core/category/domain";
 import { CategoryInMemoryRepository } from "#core/category/infra";
-import UseCase from "#core/shared/application/use-case";
+import { UseCase } from "#core/shared/application";
 import { CategoryOutputDto, CategoryOutputMapper } from "../dto/category-output.dto";
 export class GetCategoryUseCase
   implements UseCase<InputGetCategoryUseCase, CategoryOutputDto>
