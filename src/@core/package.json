@@ -2,7 +2,6 @@
   "name": "@balbi/core",
   "version": "0.0.1",
   "description": "Admin do catalogo de videos",
-  "main": "index.js",
   "imports": {
     "#core/*": "./dist/*.js"
   },

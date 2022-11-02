@@ -2,6 +2,9 @@
   "name": "code-micro-videos-fc3-ts",
   "version": "1.0.0",
   "description": "",
+  "scripts": {
+    "start": "npm run start:dev -w nestjs"
+  },
   "workspaces": [
     "./src/@core",
     "./src/nestjs"
