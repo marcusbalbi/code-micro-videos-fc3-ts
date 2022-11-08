@@ -9,10 +9,14 @@
     "strictPropertyInitialization": false,
     "outDir": "./dist",
     "paths": {
-      "#core/*": [
-        "./*"
-      ]
+      "#core/*": ["./*"]
     },
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths",
+        "afterDeclarations": true
+      }
+    ]
   },
   "include": ["src/"]
 }

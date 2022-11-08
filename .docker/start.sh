@@ -4,4 +4,4 @@ npm install
 
 #tail -f /dev/null
 
-npm start
+npm run start:dev

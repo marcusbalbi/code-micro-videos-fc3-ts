@@ -3,10 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "npm run start:dev -w nestjs"
+    "prestart:dev": "npm run build -w @balbi/core",
+    "start:dev": "npm run build:w -w @balbi/core & npm run start:dev -w nestjs",
+    "test": "jest"
   },
   "workspaces": [
     "./src/@core",
     "./src/nestjs"
-  ]
+  ],
+  "dependencies": {
+    "tsconfig-paths": "^4.1.0",
+    "tscpaths": "^0.0.9"
+  }
 }

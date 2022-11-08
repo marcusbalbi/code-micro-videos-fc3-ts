@@ -33,6 +33,11 @@
     }
   },
   "imports": {
+    "#core/category/domain": "./dist/category/domain/index.js",
+    "#core/category/application": "./dist/category/application/index.js",
+    "#core/category/infra": "./dist/category/infra/index.js",
+    "#core/shared/application": "./dist/shared/application/index.js",
+    "#core/shared/domain": "./dist/shared/domain/index.js",
     "#core/*": "./dist/*.js"
   },
   "scripts": {

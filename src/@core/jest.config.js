@@ -1,5 +1,9 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
+  displayName: {
+    name: '@core',
+    color: 'blue'
+  },
   rootDir: "./src",
   // preset: "ts-jest",
   transform: {
