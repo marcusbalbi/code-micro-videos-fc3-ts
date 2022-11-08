@@ -1,33 +1,18 @@
 {
-  "name": "app",
+  "name": "code-micro-videos-fc3-ts",
   "version": "1.0.0",
-  "description": "Admin do catalogo de videos",
-  "main": "index.js",
+  "description": "",
   "scripts": {
-    "tsc": "tsc",
-    "tsc:check": "npm run tsc --noEmit",
-    "ts-node": "ts-node",
-    "test": "jest",
-    "test:cov": "npm run test -- --coverage"
+    "prestart:dev": "npm run build -w @balbi/core",
+    "start:dev": "npm run build:w -w @balbi/core & npm run start:dev -w nestjs",
+    "test": "jest"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@swc/core": "^1.2.235",
-    "@swc/jest": "^0.2.22",
-    "@types/jest": "^28.1.7",
-    "@types/lodash": "^4.14.184",
-    "@types/node": "^18.7.6",
-    "@types/uuid": "^8.3.4",
-    "jest": "^28.1.3",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.7.4"
-  },
+  "workspaces": [
+    "./src/@core",
+    "./src/nestjs"
+  ],
   "dependencies": {
-    "class-validator": "^0.13.2",
-    "lodash": "^4.17.21",
-    "ts-jest": "^28.0.8",
-    "uuid": "^8.3.2"
+    "tsconfig-paths": "^4.1.0",
+    "tscpaths": "^0.0.9"
   }
 }

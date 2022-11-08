@@ -1,0 +1,77 @@
+{
+  "name": "@balbi/core",
+  "version": "0.0.1",
+  "description": "Admin do catalogo de videos",
+  "main": "index.js",
+  "exports": {
+    "./shared/application": "./dist/shared/application/index.js",
+    "./shared/domain": "./dist/shared/domain/index.js",
+    "./category/application": "./dist/category/application/index.js",
+    "./category/domain": "./dist/category/domain/index.js",
+    "./category/infra": "./dist/category/infra/index.js"
+  },
+  "typesVersions": {
+    ">=4.0": {
+      "shared/application": [
+        "./dist/shared/application/index.d.ts"
+      ],
+      "shared/domain": [
+        "./dist/shared/domain/index.d.ts"
+      ],
+      "shared/infra": [
+        "./dist/shared/infra/index.d.ts"
+      ],
+      "category/application": [
+        "./dist/category/application/index.d.ts"
+      ],
+      "category/domain": [
+        "./dist/category/domain/index.d.ts"
+      ],
+      "category/infra": [
+        "./dist/category/infra/index.d.ts"
+      ]
+    }
+  },
+  "imports": {
+    "#core/category/domain": "./dist/category/domain/index.js",
+    "#core/category/application": "./dist/category/application/index.js",
+    "#core/category/infra": "./dist/category/infra/index.js",
+    "#core/shared/application": "./dist/shared/application/index.js",
+    "#core/shared/domain": "./dist/shared/domain/index.js",
+    "#core/*": "./dist/*.js"
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "tsc:check": "npm run tsc --noEmit",
+    "ts-node": "ts-node",
+    "test": "jest",
+    "test:cov": "npm run test -- --coverage",
+    "cti": "cti",
+    "cti:core": "./cti.sh",
+    "build": "tsc -b ./tsconfig.json",
+    "build:w": "tsc -b ./tsconfig.json -w"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@swc/core": "^1.2.235",
+    "@swc/jest": "^0.2.22",
+    "@types/jest": "^28.1.7",
+    "@types/lodash": "^4.14.184",
+    "@types/node": "^18.7.6",
+    "@types/uuid": "^8.3.4",
+    "create-ts-index": "^1.14.0",
+    "jest": "^28.1.3",
+    "ts-node": "^10.9.1",
+    "ttypescript": "^1.5.13",
+    "typescript": "^4.7.4",
+    "typescript-transform-paths": "^3.4.4"
+  },
+  "dependencies": {
+    "class-validator": "^0.13.2",
+    "lodash": "^4.17.21",
+    "ts-jest": "^28.0.8",
+    "uuid": "^8.3.2"
+  }
+}
