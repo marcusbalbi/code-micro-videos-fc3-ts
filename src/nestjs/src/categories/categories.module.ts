@@ -5,7 +5,6 @@ import {
   CreateCategoryUseCase,
   ListCategoriesUseCase,
 } from '@balbi/core/category/application';
-import { CategoryRepository } from '@balbi/core/category/domain';
 import { CategoryInMemoryRepository } from '@balbi/core/category/infra';
 
 @Module({
