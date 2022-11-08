@@ -1,4 +1,8 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateCategoryDto } from './create-category.dto';
+import { InputUpdateCategoryUseCase } from "@balbi/core/category/application";
 
-export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {}
+export class UpdateCategoryDto implements InputUpdateCategoryUseCase {
+  id: string;
+  name: string;
+  description?: string;
+  is_active?: boolean;
+}

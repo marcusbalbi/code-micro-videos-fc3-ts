@@ -3,7 +3,10 @@ import { CategoriesService } from './categories.service';
 import { CategoriesController } from './categories.controller';
 import {
   CreateCategoryUseCase,
+  GetCategoryUseCase,
   ListCategoriesUseCase,
+  RemoveCategoryUseCase,
+  UpdateCategoryUseCase,
 } from '@balbi/core/category/application';
 import { CategoryInMemoryRepository } from '@balbi/core/category/infra';
 
@@ -26,6 +29,27 @@ import { CategoryInMemoryRepository } from '@balbi/core/category/infra';
       provide: ListCategoriesUseCase,
       useFactory: (repo: CategoryInMemoryRepository) => {
         return new ListCategoriesUseCase(repo);
+      },
+      inject: ['CategoryInMemoryRepository'],
+    },
+    {
+      provide: UpdateCategoryUseCase,
+      useFactory: (repo: CategoryInMemoryRepository) => {
+        return new UpdateCategoryUseCase(repo);
+      },
+      inject: ['CategoryInMemoryRepository'],
+    },
+    {
+      provide: GetCategoryUseCase,
+      useFactory: (repo: CategoryInMemoryRepository) => {
+        return new GetCategoryUseCase(repo);
+      },
+      inject: ['CategoryInMemoryRepository'],
+    },
+    {
+      provide: RemoveCategoryUseCase,
+      useFactory: (repo: CategoryInMemoryRepository) => {
+        return new RemoveCategoryUseCase(repo);
       },
       inject: ['CategoryInMemoryRepository'],
     },
