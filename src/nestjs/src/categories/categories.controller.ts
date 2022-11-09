@@ -40,26 +40,26 @@ export class CategoriesController {
   }
 
   @Get()
-  search(@Query() searchParams: SearchCategoryDto) {
+  async search(@Query() searchParams: SearchCategoryDto) {
     return this.listCategories.execute(searchParams);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.getCategory.execute({ id });
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
-    this.updateCategory.execute({ id, ...updateCategoryDto });
+    return this.updateCategory.execute({ id, ...updateCategoryDto });
   }
 
   @HttpCode(204)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.removeCategory.execute({ id });
   }
 }
