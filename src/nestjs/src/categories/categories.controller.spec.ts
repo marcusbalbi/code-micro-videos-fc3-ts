@@ -57,13 +57,67 @@ describe('CategoriesController', () => {
       id: output.id,
     });
   });
-  it('should delete a category', () => {
-    expect(controller).toBeDefined();
+  it('should delete a category', async () => {
+    const id = 'aa-bb-cc-dd';
+    const expectedOutput = undefined;
+    const mockDeleteUseCase = {
+      execute: jest.fn().mockReturnValue(expectedOutput),
+    };
+    //@ts-expect-error
+    controller['removeCategory'] = mockDeleteUseCase;
+    const output = await controller.remove(id);
+    expect(controller.remove(id)).toBeInstanceOf(Promise);
+    expect(mockDeleteUseCase.execute).toHaveBeenCalledWith({ id });
+    expect(expectedOutput).toStrictEqual(output);
   });
-  it('should find a category', () => {
-    expect(controller).toBeDefined();
+  it('should search a category', async () => {
+    const expectedOutput = {
+      items: [
+        {
+          id: 'aa-bb-cc-dd',
+          name: 'some name',
+          description: 'some desc',
+          is_active: true,
+          created_at: new Date(),
+        },
+      ],
+      current_page: 1,
+      last_page: 1,
+      per_page: 1,
+      total: 1,
+    };
+    const mockSearchUser = {
+      execute: jest.fn().mockReturnValue(expectedOutput),
+    };
+    //@ts-expect-error
+    controller['listCategories'] = mockSearchUser;
+    const searchParams = {
+      page: 1,
+      per_page: 2,
+      sort: 'name',
+      sort_dir: 'desc',
+      filter: 'test',
+    };
+    const output = await controller.search(searchParams);
+    expect(mockSearchUser.execute).toHaveBeenCalledWith(searchParams);
+    expect(expectedOutput).toStrictEqual(output);
   });
-  it('should search categories', () => {
-    expect(controller).toBeDefined();
+  it('should find acategory', async () => {
+    const id = 'aa-bb-cc-dd';
+    const expectedOutput = {
+      id,
+      name: 'some name',
+      description: 'some desc',
+      is_active: true,
+      created_at: new Date(),
+    };
+    const mockGetUser = {
+      execute: jest.fn().mockReturnValue(expectedOutput),
+    };
+    //@ts-expect-error
+    controller['getCategory'] = mockGetUser;
+    const output = await controller.findOne(id);
+    expect(mockGetUser.execute).toHaveBeenCalledWith({ id });
+    expect(expectedOutput).toStrictEqual(output);
   });
 });
