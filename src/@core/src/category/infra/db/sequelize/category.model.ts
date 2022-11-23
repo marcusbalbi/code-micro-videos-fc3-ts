@@ -1,14 +1,13 @@
-import { Model } from "sequelize";
-import { Column, DataType, PrimaryKey, Table } from "sequelize-typescript";
+import { Column, DataType, PrimaryKey, Table, Model } from "sequelize-typescript";
 
 
 type CategoryModelProperties = {
   id: string;
   name: string;
   description: string | null;
-  is_actite: boolean;
+  is_active: boolean;
   created_at: Date;
-}
+};
 
 @Table({
   tableName: 'categories',
@@ -22,13 +21,13 @@ export class CategoryModel extends Model<CategoryModelProperties> {
   @Column({ allowNull: false, type: DataType.STRING(255) })
   name: string;
 
-  @Column({ type: DataType.TEXT })
+  @Column({ allowNull: true, type: DataType.TEXT })
   description: string | null;
 
-  @Column({ allowNull: false })
-  is_actite: boolean;
+  @Column({ allowNull: false, type: DataType.BOOLEAN })
+  is_active: boolean;
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, type: DataType.DATE })
   created_at: Date;
 
 }
