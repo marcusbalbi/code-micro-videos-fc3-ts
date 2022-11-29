@@ -26,10 +26,10 @@ describe("InMemory Repository unit tests", () => {
   });
 
   test("throw error when entity not found", async () => {
-    expect(repository.findById("aaa")).rejects.toThrow(
+    await expect(repository.findById("aaa")).rejects.toThrow(
       `Entity not found using ID: aaa`
     );
-    expect(repository.findById(new UniqueEntityId())).rejects.toThrow(
+    await expect(repository.findById(new UniqueEntityId())).rejects.toThrow(
       `Entity not found using ID:`
     );
   });
