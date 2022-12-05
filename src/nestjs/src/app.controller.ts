@@ -11,7 +11,6 @@ export class AppController {
     const repo = new CategoryInMemoryRepository();
     const usecase = new CreateCategoryUseCase(repo);
     usecase.execute({ name: 'ola' });
-    console.log(repo);
     return this.appService.getHello();
   }
 }
