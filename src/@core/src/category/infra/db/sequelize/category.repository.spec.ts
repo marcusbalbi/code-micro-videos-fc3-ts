@@ -46,5 +46,11 @@ describe("CategorySequeelizeRepository test", () => {
     const category = await repository.findById(id);
     expect(category.name).toEqual('Movie');
   });
+  test('should find all categories', async () => {
+    await CategoryModel.create({ id: new UniqueEntityId().toString(), name: 'Movie', created_at: new Date(), is_active: true });
+    await CategoryModel.create({ id: new UniqueEntityId().toString(), name: 'Series', created_at: new Date(), is_active: true });
+    const categories = await repository.findAll();
+    expect(categories.length).toEqual(2);
+  });
 
 });
