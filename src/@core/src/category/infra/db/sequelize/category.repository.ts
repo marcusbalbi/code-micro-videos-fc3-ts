@@ -1,17 +1,46 @@
-import { Category, CategoryRepository, CategorySearchParams, CategorySearchResult } from "#core/category/domain";
+import {
+  Category,
+  CategoryRepository,
+  CategorySearchParams,
+  CategorySearchResult,
+} from "#core/category/domain";
 import { UniqueEntityId } from "#core/shared/domain";
 import { NotFoundError } from "#core/shared/errors/not-found-error";
+import { Op, Order, WhereOptions } from "sequelize";
 import { CategoryModelMapper } from "./category-mapper";
 import { CategoryModel } from "./category.model";
 
 export class CategorySequelizeRepository implements CategoryRepository {
-  sortableFields: string[]= ['name', 'created_at'];
+  sortableFields: string[] = ["name", "created_at"];
 
-  constructor (private categoryModel: typeof CategoryModel) {
-  }
+  constructor(private categoryModel: typeof CategoryModel) {}
 
   async search(props: CategorySearchParams): Promise<CategorySearchResult> {
-    throw new Error("Method not implemented.");
+    const { page, per_page, sort, sort_dir, filter  } = props;
+    const offset = (page - 1) * per_page;
+    let where: any = {};
+    if (filter) {
+      where.name = { [Op.like]: `%${filter}%` };
+    }
+    let order: Order = [['created_at', 'desc']];
+    if (sort && this.sortableFields.includes(sort)) {
+      order = [[sort, sort_dir || "ASC"]];
+    }
+    const { rows, count } = await this.categoryModel.findAndCountAll({
+      where,
+      limit: per_page,
+      offset,
+      order,
+    });
+    return new CategorySearchResult({
+      items: rows.map((r) => CategoryModelMapper.toEntity(r)),
+      total: count,
+      current_page: page,
+      per_page: per_page,
+      sort: sort,
+      sort_dir: sort_dir,
+      filter: filter,
+    });
   }
   async insert(entity: Category): Promise<void> {
     await this.categoryModel.create(entity.toJSON());
@@ -31,8 +60,9 @@ export class CategorySequelizeRepository implements CategoryRepository {
     throw new Error("Method not implemented.");
   }
 
-  private async _get(id : string) {
-    return this.categoryModel.findByPk(id.toString(), { rejectOnEmpty: new NotFoundError(`Entity not found using ID: ${id}`) });
+  private async _get(id: string) {
+    return this.categoryModel.findByPk(id.toString(), {
+      rejectOnEmpty: new NotFoundError(`Entity not found using ID: ${id}`),
+    });
   }
-
 }

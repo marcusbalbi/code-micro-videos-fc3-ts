@@ -30,4 +30,8 @@ export class CategoryModel extends Model<CategoryModelProperties> {
   @Column({ allowNull: false, type: DataType.DATE })
   created_at: Date;
 
+  static factory() {
+    
+  }
+
 }

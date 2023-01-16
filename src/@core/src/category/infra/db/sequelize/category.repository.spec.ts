@@ -1,6 +1,6 @@
 import { Category } from "#core/category/domain";
 import { UniqueEntityId } from "#core/shared/domain";
-import { DataType, Sequelize } from "sequelize-typescript";
+import { Sequelize } from "sequelize-typescript";
 import { CategoryModel } from "./category.model";
 import { CategorySequelizeRepository } from "./category.repository";
 describe("CategorySequeelizeRepository test", () => {
@@ -53,4 +53,7 @@ describe("CategorySequeelizeRepository test", () => {
     expect(categories.length).toEqual(2);
   });
 
+  test('search', () => {
+
+  });
 });
