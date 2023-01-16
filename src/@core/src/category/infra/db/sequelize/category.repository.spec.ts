@@ -53,7 +53,8 @@ describe("CategorySequeelizeRepository test", () => {
     expect(categories.length).toEqual(2);
   });
 
-  test('search', () => {
-
+  test('search', async () => {
+    // CategoryModel.factory().create();
+    // console.log(await CategoryModel.findAll())
   });
 });
