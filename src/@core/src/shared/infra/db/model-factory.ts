@@ -1,15 +1,30 @@
 
 export interface Model {
-  create: (data?: any) => void
+  create: (data?: any) => Promise<any>;
+  build: (data?: any) => any;
+  bulkCreate: (data: any[]) => Promise<any>;
 }
 export class ModelFactory {
-  constructor (private model: Model, private factoryProps: () => any) {
+  private _count = 1;
 
+  constructor(private model: Model, private factoryProps: () => any) {}
+
+  count(c: number) {
+    this._count = c;
+    return this;
   }
+
   async create(data?) {
-    this.model.create(data || this.factoryProps());
+    return this.model.create(data || this.factoryProps());
   }
-  make() {}
-  async bulkCreate() {}
+  make(data?: any) {
+    return this.model.build(data || this.factoryProps());
+  }
+  async bulkCreate(customFactoryProps?: (index: number) => any) {
+    const data = new Array(this._count)
+      .fill(customFactoryProps ? customFactoryProps : this.factoryProps)
+      .map((factory, index) => factory(index));
+    return this.model.bulkCreate(data);
+  }
   async bulkMake() {}
 }
