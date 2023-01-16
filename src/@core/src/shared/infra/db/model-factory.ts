@@ -1,5 +1,9 @@
+
+export interface Model {
+  create: (data?: any) => void
+}
 export class ModelFactory {
-  constructor (private model, private factoryProps: () => any) {
+  constructor (private model: Model, private factoryProps: () => any) {
 
   }
   async create(data?) {

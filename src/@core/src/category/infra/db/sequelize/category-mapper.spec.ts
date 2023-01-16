@@ -1,30 +1,12 @@
 import { Category } from "#core/category/domain";
 import { LoadEntityError } from "#core/shared/errors/load-entity.error";
-import { Sequelize } from "sequelize-typescript";
+import { setupSequelize } from "#core/shared/testing/db/sequelize";
 import { CategoryModelMapper } from "./category-mapper";
 import { CategoryModel } from "./category.model";
-import { CategorySequelizeRepository } from "./category.repository";
 
 describe("Category Mapper", () => {
-  let sequelize: Sequelize;
-  let repository: CategorySequelizeRepository;
-  beforeAll(() => {
-    sequelize = new Sequelize({
-      dialect: "sqlite",
-      host: ":memory:",
-      logging: false,
-      models: [CategoryModel],
-    });
-  });
+  setupSequelize({ models: [CategoryModel] })
 
-  beforeEach(async () => {
-    await sequelize.sync({ force: true });
-    repository = new CategorySequelizeRepository(CategoryModel);
-  });
-
-  afterAll(async () => {
-    await sequelize.close();
-  });
   test("should map model to domain category", () => {
     const model = CategoryModel.build({
       id: "c9f381a7-ddcb-4967-931d-6628f67ec38c",

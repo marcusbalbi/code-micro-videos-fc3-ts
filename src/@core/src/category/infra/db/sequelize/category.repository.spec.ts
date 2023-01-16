@@ -1,27 +1,14 @@
 import { Category } from "#core/category/domain";
 import { UniqueEntityId } from "#core/shared/domain";
-import { Sequelize } from "sequelize-typescript";
+import { setupSequelize } from "#core/shared/testing/db/sequelize";
 import { CategoryModel } from "./category.model";
 import { CategorySequelizeRepository } from "./category.repository";
 describe("CategorySequeelizeRepository test", () => {
-  let sequelize: Sequelize;
   let repository: CategorySequelizeRepository;
-  beforeAll(() => {
-    sequelize = new Sequelize({
-      dialect: "sqlite",
-      host: ":memory:",
-      logging: false,
-      models: [CategoryModel],
-    });
-  });
+  setupSequelize({ models: [CategoryModel] });
 
   beforeEach(async () => {
-    await sequelize.sync({ force: true });
     repository = new CategorySequelizeRepository(CategoryModel);
-  });
-
-  afterAll(async () => {
-    await sequelize.close();
   });
 
   it("should insert a new category", async () => {
