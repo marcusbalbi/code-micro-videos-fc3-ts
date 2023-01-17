@@ -3,6 +3,7 @@ export interface Model {
   create: (data?: any) => Promise<any>;
   build: (data?: any) => any;
   bulkCreate: (data: any[]) => Promise<any>;
+  bulkBuild: (data: any[]) => Promise<any>;
 }
 export class ModelFactory {
   private _count = 1;
@@ -26,5 +27,10 @@ export class ModelFactory {
       .map((factory, index) => factory(index));
     return this.model.bulkCreate(data);
   }
-  async bulkMake() {}
+  async bulkMake(customFactoryProps?: (index: number) => any) {
+    const data = new Array(this._count)
+      .fill(customFactoryProps ? customFactoryProps : this.factoryProps)
+      .map((factory, index) => factory(index));
+    return this.model.bulkBuild(data);
+  }
 }

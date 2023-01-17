@@ -1,19 +1,7 @@
 import { ModelFactory, Model } from "./model-factory";
-import crypto from 'crypto';
+import crypto from "crypto";
 
 class StubModel implements Model {
-  bulkCreate (data: any[]) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(data.map(d => {
-          const m = new StubModel();
-          m.id = d.id;
-          m.name = d.name;
-          return m;
-        }));
-      }, 100);
-    });
-  };
   public id;
   public name;
   async create(data) {
@@ -28,6 +16,33 @@ class StubModel implements Model {
   build(data) {
     this.id = data.id;
     this.name = data.name;
+  }
+  async bulkCreate(data: any[]) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(
+          data.map((d) => {
+            const m = new StubModel();
+            m.build(d);
+            return m;
+          })
+        );
+      }, 100);
+    });
+  }
+  async bulkBuild(data: any[]) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(
+          data.map((d) => {
+            const m = new StubModel();
+            m.id = d.id;
+            m.name = d.name;
+            return m;
+          })
+        );
+      }, 100);
+    });
   }
 }
 
@@ -76,30 +91,57 @@ describe("ModelFactory", () => {
     expect(stub.name).toBe(data.name);
   });
 
-  test('bulk create', async () => {
+  test("bulk create", async () => {
     const stub = new StubModel();
     const spyModel = jest.spyOn(stub, "bulkCreate");
     const factoryProps = jest.fn(() => ({
       id: crypto.randomUUID(),
-      name: "testtest".concat(crypto.randomBytes(5).toString('hex')),
+      name: "testtest".concat(crypto.randomBytes(5).toString("hex")),
     }));
     const factory = new ModelFactory(stub, factoryProps);
     const models = await factory.count(10).bulkCreate();
     expect(factoryProps).toHaveBeenCalledTimes(10);
-    expect(models.length).toBe(10)
+    expect(models.length).toBe(10);
     expect(spyModel).toHaveBeenCalled();
-  })
-  test('bulk create no count', async () => {
+  });
+  test("bulk create no count", async () => {
     const stub = new StubModel();
     const spyModel = jest.spyOn(stub, "bulkCreate");
     const factoryProps = jest.fn(() => ({
       id: crypto.randomUUID(),
-      name: "testtest".concat(crypto.randomBytes(5).toString('hex')),
+      name: "testtest".concat(crypto.randomBytes(5).toString("hex")),
     }));
     const factory = new ModelFactory(stub, factoryProps);
     const models = await factory.bulkCreate();
     expect(factoryProps).toHaveBeenCalledTimes(1);
-    expect(models.length).toBe(1)
+    expect(models.length).toBe(1);
     expect(spyModel).toHaveBeenCalled();
-  })
+  });
+
+  test("bulk make", async () => {
+    const stub = new StubModel();
+    const spyModel = jest.spyOn(stub, "bulkBuild");
+    const factoryProps = jest.fn(() => ({
+      id: crypto.randomUUID(),
+      name: "testtest".concat(crypto.randomBytes(5).toString("hex")),
+    }));
+    const factory = new ModelFactory(stub, factoryProps);
+    const models = await factory.count(10).bulkMake();
+    expect(factoryProps).toHaveBeenCalledTimes(10);
+    expect(models.length).toBe(10);
+    expect(spyModel).toHaveBeenCalled();
+  });
+  test("bulk create no count", async () => {
+    const stub = new StubModel();
+    const spyModel = jest.spyOn(stub, "bulkBuild");
+    const factoryProps = jest.fn(() => ({
+      id: crypto.randomUUID(),
+      name: "testtest".concat(crypto.randomBytes(5).toString("hex")),
+    }));
+    const factory = new ModelFactory(stub, factoryProps);
+    const models = await factory.bulkMake();
+    expect(factoryProps).toHaveBeenCalledTimes(1);
+    expect(models.length).toBe(1);
+    expect(spyModel).toHaveBeenCalled();
+  });
 });
