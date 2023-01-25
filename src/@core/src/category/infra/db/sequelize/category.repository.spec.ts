@@ -160,5 +160,47 @@ describe("CategorySequeelizeRepository test", () => {
     expect(searchOutput.items[1].name).toBe("MovieL")
     expect(searchOutput.items[2].name).toBe("MovieK")
     })
+
+    test("should paginate, sort and sort", async () => {
+      let lastDate = new Date();
+      let charCodeName = 65; // A
+      let changeName = false;
+      await CategoryModel.factory()
+        .count(16)
+        .bulkCreate(() => {
+          lastDate = new Date(lastDate.getTime() + 1000);
+          changeName = !changeName;
+          return {
+            id: chance.guid({ version: 4 }),
+            name: (changeName ? "Movie" : "Series").concat(String.fromCharCode(charCodeName++)),
+            description: null,
+            is_active: true,
+            created_at: lastDate,
+          };
+        });
+      const searchOutput = await repository.search(
+        new CategorySearchParams({
+          per_page: 3,
+          page: 2,
+          sort: "name",
+          sort_dir: "desc",
+          filter: 'Series',
+        })
+      );
+      expect(searchOutput).toBeInstanceOf(CategorySearchResult);
+      expect(searchOutput.toJSON()).toMatchObject({
+        total: 8,
+        current_page: 2,
+        per_page: 3,
+        sort: "name",
+        sort_dir: "desc",
+        last_page: 3,
+        filter: "Series",
+      });
+      expect(searchOutput.items[0].name).toBe("SeriesJ");
+      expect(searchOutput.items[1].name).toBe("SeriesH");
+      expect(searchOutput.items[2].name).toBe("SeriesF");
+    });
+
   })
 });
