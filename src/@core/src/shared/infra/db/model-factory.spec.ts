@@ -30,7 +30,7 @@ class StubModel implements Model {
       }, 100);
     });
   }
-  async bulkBuild(data: any[]) {
+  bulkBuild(data: any[]) {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(

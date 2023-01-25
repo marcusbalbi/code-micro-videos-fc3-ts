@@ -1,11 +1,20 @@
-import { Category } from "#core/category/domain";
+import { Category, CategorySearchParams, CategorySearchResult } from "#core/category/domain";
 import { UniqueEntityId } from "#core/shared/domain";
 import { setupSequelize } from "#core/shared/testing/db/sequelize";
 import { CategoryModel } from "./category.model";
 import { CategorySequelizeRepository } from "./category.repository";
+import Chance from "chance";
+import { CategoryModelMapper } from "./category-mapper";
+
 describe("CategorySequeelizeRepository test", () => {
   let repository: CategorySequelizeRepository;
   setupSequelize({ models: [CategoryModel] });
+
+  let chance: Chance.Chance;
+
+  beforeAll(() => {
+    chance = new Chance();
+  })
 
   beforeEach(async () => {
     repository = new CategorySequelizeRepository(CategoryModel);
@@ -40,8 +49,34 @@ describe("CategorySequeelizeRepository test", () => {
     expect(categories.length).toEqual(2);
   });
 
-  test('search', async () => {
-    // CategoryModel.factory().create();
-    // console.log(await CategoryModel.findAll())
-  });
+  describe('search method', () => {
+    test("should only apply paginate when other params are null", async () => {
+      const created_at = new Date();
+      await CategoryModel.factory().count(16).bulkCreate(() => {
+        return {
+          id: chance.guid({ version: 4 }),
+          name: "Movie",
+          description: null,
+          is_active: true,
+          created_at,
+        };
+      });
+      const spyToEntity = jest.spyOn(CategoryModelMapper, 'toEntity');
+      const searchOutput = await repository.search(new CategorySearchParams());
+      expect(searchOutput).toBeInstanceOf(CategorySearchResult)
+      expect(spyToEntity).toHaveBeenCalledTimes(15)
+      expect(searchOutput.toJSON()).toMatchObject({
+        total: 16,
+        current_page: 1,
+        last_page: 2,
+        per_page: 15,
+        sort: "created_at",
+        sort_dir: 'asc',
+        filter: null,
+      });
+      for (const item of searchOutput.items) {
+        expect(item).toBeInstanceOf(Category)
+      }
+    });
+  })
 });
