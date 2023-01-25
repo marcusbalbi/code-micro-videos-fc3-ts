@@ -78,5 +78,27 @@ describe("CategorySequeelizeRepository test", () => {
         expect(item).toBeInstanceOf(Category)
       }
     });
+    test("should have created_at order when serch params are null", async () => {
+      const created_at = new Date();
+      await CategoryModel.factory().count(16).bulkCreate(() => {
+        return {
+          id: chance.guid({ version: 4 }),
+          name: "Movie",
+          description: null,
+          is_active: true,
+          created_at: new Date(created_at.getTime() + 100),
+        };
+      });
+      const searchOutput = await repository.search(new CategorySearchParams());
+      expect(searchOutput).toBeInstanceOf(CategorySearchResult);
+      expect(
+        searchOutput.items[0].created_at.getTime() <
+          searchOutput.items[1].created_at.getTime()
+      );
+      expect(
+        searchOutput.items[searchOutput.items.length - 2].created_at.getTime() <
+          searchOutput.items[searchOutput.items.length - 1].created_at.getTime()
+      );
+    });
   })
 });
