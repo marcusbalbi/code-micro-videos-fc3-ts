@@ -79,14 +79,15 @@ describe("CategorySequeelizeRepository test", () => {
       }
     });
     test("should have created_at order when serch params are null", async () => {
-      const created_at = new Date();
+      let lastDate = new Date();
       await CategoryModel.factory().count(16).bulkCreate(() => {
+        lastDate = new Date(lastDate.getTime() + 1000);
         return {
           id: chance.guid({ version: 4 }),
           name: "Movie",
           description: null,
           is_active: true,
-          created_at: new Date(created_at.getTime() + 100),
+          created_at: lastDate,
         };
       });
       const searchOutput = await repository.search(new CategorySearchParams());
@@ -94,11 +95,70 @@ describe("CategorySequeelizeRepository test", () => {
       expect(
         searchOutput.items[0].created_at.getTime() <
           searchOutput.items[1].created_at.getTime()
-      );
+      ).toBe(true);
       expect(
         searchOutput.items[searchOutput.items.length - 2].created_at.getTime() <
           searchOutput.items[searchOutput.items.length - 1].created_at.getTime()
-      );
+      ).toBe(true);
     });
+
+    test('should have filter and paginate correct', async () => {
+      let changeName = false
+      await CategoryModel.factory()
+        .count(16)
+        .bulkCreate(() => {
+          changeName = !changeName;
+          return {
+            id: chance.guid({ version: 4 }),
+            name: changeName ? "MovieA" : "MovieB",
+            description: null,
+            is_active: true,
+            created_at: new Date(),
+          };
+        });
+      const searchOutput = await repository.search(new CategorySearchParams({ per_page: 2, filter: 'MovieA',page: 2 }));
+      expect(searchOutput).toBeInstanceOf(CategorySearchResult);
+      expect(searchOutput.toJSON()).toMatchObject({
+        total: 8,
+        current_page: 2,
+        per_page: 2,
+        sort: "created_at",
+        sort_dir: "asc",
+        filter: "MovieA",
+        last_page: 4,
+      });
+    })
+
+    test('should paginate and order', async () => {
+      let lastDate = new Date();
+      let charCodeName = 65; // A
+      await CategoryModel.factory()
+        .count(16)
+        .bulkCreate(() => {
+          lastDate = new Date(lastDate.getTime() + 1000);
+          return {
+            id: chance.guid({ version: 4 }),
+            name: "Movie".concat(String.fromCharCode(charCodeName++)),
+            description: null,
+            is_active: true,
+            created_at: lastDate,
+          };
+        });
+      const searchOutput = await repository.search(
+        new CategorySearchParams({ per_page: 3, page: 2, sort: 'name', sort_dir: 'desc' })
+      );
+      expect(searchOutput).toBeInstanceOf(CategorySearchResult);
+      expect(searchOutput.toJSON()).toMatchObject({
+        total: 16,
+        current_page: 2,
+        per_page: 3,
+        sort: "name",
+        sort_dir: "desc",
+        last_page: 6,
+      });
+    expect(searchOutput.items[0].name).toBe("MovieM")
+    expect(searchOutput.items[1].name).toBe("MovieL")
+    expect(searchOutput.items[2].name).toBe("MovieK")
+    })
   })
 });
