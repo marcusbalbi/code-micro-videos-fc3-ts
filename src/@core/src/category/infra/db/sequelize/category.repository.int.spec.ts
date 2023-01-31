@@ -1,4 +1,8 @@
-import { Category, CategorySearchParams, CategorySearchResult } from "#core/category/domain";
+import {
+  Category,
+  CategorySearchParams,
+  CategorySearchResult,
+} from "#core/category/domain";
 import { UniqueEntityId } from "#core/shared/domain";
 import { setupSequelize } from "#core/shared/testing/db/sequelize";
 import { CategoryModel } from "./category.model";
@@ -14,7 +18,7 @@ describe("CategorySequeelizeRepository test", () => {
 
   beforeAll(() => {
     chance = new Chance();
-  })
+  });
 
   beforeEach(async () => {
     repository = new CategorySequelizeRepository(CategoryModel);
@@ -36,60 +40,79 @@ describe("CategorySequeelizeRepository test", () => {
     );
   });
 
-  test('should find a entity by ID', async () => {
+  test("should find a entity by ID", async () => {
     const id = new UniqueEntityId();
-    await CategoryModel.create({ id: id.toString(), name: 'Movie', created_at: new Date(), is_active: true });
+    await CategoryModel.create({
+      id: id.toString(),
+      name: "Movie",
+      created_at: new Date(),
+      is_active: true,
+    });
     const category = await repository.findById(id);
-    expect(category.name).toEqual('Movie');
+    expect(category.name).toEqual("Movie");
   });
-  test('should find all categories', async () => {
-    await CategoryModel.create({ id: new UniqueEntityId().toString(), name: 'Movie', created_at: new Date(), is_active: true });
-    await CategoryModel.create({ id: new UniqueEntityId().toString(), name: 'Series', created_at: new Date(), is_active: true });
+  test("should find all categories", async () => {
+    await CategoryModel.create({
+      id: new UniqueEntityId().toString(),
+      name: "Movie",
+      created_at: new Date(),
+      is_active: true,
+    });
+    await CategoryModel.create({
+      id: new UniqueEntityId().toString(),
+      name: "Series",
+      created_at: new Date(),
+      is_active: true,
+    });
     const categories = await repository.findAll();
     expect(categories.length).toEqual(2);
   });
 
-  describe('search method', () => {
+  describe("search method", () => {
     test("should only apply paginate when other params are null", async () => {
       const created_at = new Date();
-      await CategoryModel.factory().count(16).bulkCreate(() => {
-        return {
-          id: chance.guid({ version: 4 }),
-          name: "Movie",
-          description: null,
-          is_active: true,
-          created_at,
-        };
-      });
-      const spyToEntity = jest.spyOn(CategoryModelMapper, 'toEntity');
+      await CategoryModel.factory()
+        .count(16)
+        .bulkCreate(() => {
+          return {
+            id: chance.guid({ version: 4 }),
+            name: "Movie",
+            description: null,
+            is_active: true,
+            created_at,
+          };
+        });
+      const spyToEntity = jest.spyOn(CategoryModelMapper, "toEntity");
       const searchOutput = await repository.search(new CategorySearchParams());
-      expect(searchOutput).toBeInstanceOf(CategorySearchResult)
-      expect(spyToEntity).toHaveBeenCalledTimes(15)
+      expect(searchOutput).toBeInstanceOf(CategorySearchResult);
+      expect(spyToEntity).toHaveBeenCalledTimes(15);
       expect(searchOutput.toJSON()).toMatchObject({
         total: 16,
         current_page: 1,
         last_page: 2,
         per_page: 15,
         sort: "created_at",
-        sort_dir: 'asc',
+        sort_dir: "asc",
         filter: null,
       });
       for (const item of searchOutput.items) {
-        expect(item).toBeInstanceOf(Category)
+        expect(item).toBeInstanceOf(Category);
       }
     });
     test("should have created_at order when serch params are null", async () => {
       let lastDate = new Date();
-      await CategoryModel.factory().count(16).bulkCreate(() => {
-        lastDate = new Date(lastDate.getTime() + 1000);
-        return {
-          id: chance.guid({ version: 4 }),
-          name: "Movie",
-          description: null,
-          is_active: true,
-          created_at: lastDate,
-        };
-      });
+      await CategoryModel.factory()
+        .count(16)
+        .bulkCreate(() => {
+          lastDate = new Date(lastDate.getTime() + 1000);
+          return {
+            id: chance.guid({ version: 4 }),
+            name: "Movie",
+            description: null,
+            is_active: true,
+            created_at: lastDate,
+          };
+        });
       const searchOutput = await repository.search(new CategorySearchParams());
       expect(searchOutput).toBeInstanceOf(CategorySearchResult);
       expect(
@@ -102,8 +125,8 @@ describe("CategorySequeelizeRepository test", () => {
       ).toBe(true);
     });
 
-    test('should have filter and paginate correct', async () => {
-      let changeName = false
+    test("should have filter and paginate correct", async () => {
+      let changeName = false;
       await CategoryModel.factory()
         .count(16)
         .bulkCreate(() => {
@@ -116,7 +139,9 @@ describe("CategorySequeelizeRepository test", () => {
             created_at: new Date(),
           };
         });
-      const searchOutput = await repository.search(new CategorySearchParams({ per_page: 2, filter: 'MovieA',page: 2 }));
+      const searchOutput = await repository.search(
+        new CategorySearchParams({ per_page: 2, filter: "MovieA", page: 2 })
+      );
       expect(searchOutput).toBeInstanceOf(CategorySearchResult);
       expect(searchOutput.toJSON()).toMatchObject({
         total: 8,
@@ -127,9 +152,9 @@ describe("CategorySequeelizeRepository test", () => {
         filter: "MovieA",
         last_page: 4,
       });
-    })
+    });
 
-    test('should paginate and order', async () => {
+    test("should paginate and order", async () => {
       let lastDate = new Date();
       let charCodeName = 65; // A
       await CategoryModel.factory()
@@ -145,7 +170,12 @@ describe("CategorySequeelizeRepository test", () => {
           };
         });
       const searchOutput = await repository.search(
-        new CategorySearchParams({ per_page: 3, page: 2, sort: 'name', sort_dir: 'desc' })
+        new CategorySearchParams({
+          per_page: 3,
+          page: 2,
+          sort: "name",
+          sort_dir: "desc",
+        })
       );
       expect(searchOutput).toBeInstanceOf(CategorySearchResult);
       expect(searchOutput.toJSON()).toMatchObject({
@@ -156,10 +186,10 @@ describe("CategorySequeelizeRepository test", () => {
         sort_dir: "desc",
         last_page: 6,
       });
-    expect(searchOutput.items[0].name).toBe("MovieM")
-    expect(searchOutput.items[1].name).toBe("MovieL")
-    expect(searchOutput.items[2].name).toBe("MovieK")
-    })
+      expect(searchOutput.items[0].name).toBe("MovieM");
+      expect(searchOutput.items[1].name).toBe("MovieL");
+      expect(searchOutput.items[2].name).toBe("MovieK");
+    });
 
     test("should paginate, sort and sort", async () => {
       let lastDate = new Date();
@@ -172,7 +202,9 @@ describe("CategorySequeelizeRepository test", () => {
           changeName = !changeName;
           return {
             id: chance.guid({ version: 4 }),
-            name: (changeName ? "Movie" : "Series").concat(String.fromCharCode(charCodeName++)),
+            name: (changeName ? "Movie" : "Series").concat(
+              String.fromCharCode(charCodeName++)
+            ),
             description: null,
             is_active: true,
             created_at: lastDate,
@@ -184,7 +216,7 @@ describe("CategorySequeelizeRepository test", () => {
           page: 2,
           sort: "name",
           sort_dir: "desc",
-          filter: 'Series',
+          filter: "Series",
         })
       );
       expect(searchOutput).toBeInstanceOf(CategorySearchResult);
@@ -201,6 +233,26 @@ describe("CategorySequeelizeRepository test", () => {
       expect(searchOutput.items[1].name).toBe("SeriesH");
       expect(searchOutput.items[2].name).toBe("SeriesF");
     });
+  });
 
-  })
+  test("should update a category", async () => {
+    let category = new Category({ name: "Movie", description: "teste" });
+    await repository.insert(category);
+    category.update("Movie", "teste2");
+    await repository.update(category);
+    const updated = await repository.findById(category.id);
+    expect(updated.toJSON()).toStrictEqual(category.toJSON());
+  });
+  test("should throw an error if entity not found on update", async () => {
+    let category = new Category({ name: "Movie", description: "teste" });
+    category.update("Movie", "teste2");
+    expect(repository.update(category)).rejects.toThrow();
+  });
+
+  test("should delete", async () => {
+    let category = new Category({ name: "Movie", description: "teste" });
+    await repository.insert(category);
+    await repository.delete(category.id);
+    expect(repository.findById(category.id)).rejects.toThrow();
+  });
 });
