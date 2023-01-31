@@ -1,6 +1,6 @@
 import { CategoryInMemoryRepository } from "#core/category/infra";
-import { Category } from "../../../domain/entities/category";
-import {UpdateCategoryUseCase} from "../update-category.usecase"
+import { Category } from "../../../../domain/entities/category";
+import {UpdateCategoryUseCase} from "../../update-category.usecase"
 
 describe("UpdateCategoryUseCase unit test", () => {
   let useCase: UpdateCategoryUseCase;

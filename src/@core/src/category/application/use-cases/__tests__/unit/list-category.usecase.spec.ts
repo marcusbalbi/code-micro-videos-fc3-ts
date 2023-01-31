@@ -1,6 +1,6 @@
-import { CategorySearchResult } from "../../../domain/repository/category.repository";
-import { Category } from "../../../domain/entities/category";
-import {ListCategoriesUseCase} from "../list-categories.usecase";
+import { CategorySearchResult } from "../../../../domain/repository/category.repository";
+import { Category } from "../../../../domain/entities/category";
+import {ListCategoriesUseCase} from "../../list-categories.usecase";
 import { CategoryInMemoryRepository } from "#core/category/infra";
 
 describe("ListCategoryUseCase unit test", () => {
